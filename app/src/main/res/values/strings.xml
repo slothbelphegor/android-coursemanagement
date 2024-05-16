@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Course Management</string>
+    <string name="groupname">Group name here</string>
+    <string name="member1">Trần Đình An</string>
+    <string name = "member2">Vũ Thị Diệu Anh</string>
+    <string name = "member3">Nguyễn Tiến Đạt</string>
+    <string name = "member4">Lê Nguyễn Trung Mẫn</string>
+    <string name = "member5">Nguyễn Quang Trung Nhân</string>
+    <string name="app_title">Course Management</string>
+    <string name="showallcourses">All Courses</string>
+    <string name="addcourse">New Course</string>
+    <string name="findcourse">Find Course</string>
+</resources>

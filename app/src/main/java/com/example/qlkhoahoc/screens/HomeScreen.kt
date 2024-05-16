@@ -1,0 +1,204 @@
+package com.example.qlkhoahoc.screens
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+
+import androidx.compose.foundation.layout.*
+
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+
+
+import androidx.compose.ui.unit.sp
+import com.example.qlkhoahoc.R
+
+val members1: List<String> = listOf(
+    "Trần Đình An",
+    "Nguyễn Tiến Đạt")
+val members2: List<String> = listOf(
+    "Vũ Thị Diệu Anh",
+    "Lê Nguyễn Trung Mẫn"
+)
+const val strongestMember = "Nguyễn Quang Trung Nhân"
+
+@Composable
+fun AuthorRow(value: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(6.dp),
+            text = value,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Black
+        )
+    }
+}
+
+@Composable
+fun HomeScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(204, 207, 220)),
+        contentAlignment = Alignment.TopCenter // trên xuống, căn giữa
+
+    ) {
+        Column {
+            DetailSection()
+            ImageSection()
+            AuthorSection()
+        }
+    }
+}
+
+@Composable
+fun AuthorSection() {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(10.dp)
+    ) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Row (
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = ""
+                )
+                Text(
+                    modifier = Modifier.padding(start = 6.dp),
+                    text = "Thành viên nhóm:",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Red
+                )
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            Row {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    members1.forEachIndexed { _, member ->
+                        Row(
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            AuthorRow(value = member)
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    members2.forEachIndexed { _, member ->
+                        Row(
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            AuthorRow(value = member)
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AuthorRow(value = strongestMember)
+             }
+        }
+    }
+}
+
+
+@Composable
+fun DetailSection() {
+//    Card(
+//        modifier = Modifier
+//            .padding(10.dp)
+//            .fillMaxWidth()
+//            .background(Color(204, 207, 220)),
+//        elevation = CardDefaults.cardElevation(10.dp),
+//
+//    ) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.app_title),
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Dành cho học viên & giảng viên",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(79, 104, 196),
+                    fontStyle = FontStyle.Italic
+                )
+            }
+        }
+    }
+//}
+/
+
+@Composable
+fun ImageSection() {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(modifier = Modifier
+            .size(400.dp)
+            //.clip(CircleShape)
+            //.border(5.dp, Color.Red, CircleShape)
+            ,painter = painterResource(id = R.drawable.homeicon),
+            contentDescription = "",
+            contentScale = ContentScale.Crop)
+    }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun HomePreview() {
+    HomeScreen()
+}
