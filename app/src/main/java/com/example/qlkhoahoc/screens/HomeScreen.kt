@@ -31,7 +31,8 @@ import com.example.qlkhoahoc.R
 
 val members1: List<String> = listOf(
     "Trần Đình An",
-    "Nguyễn Tiến Đạt")
+    "Nguyễn Tiến Đạt"
+)
 val members2: List<String> = listOf(
     "Vũ Thị Diệu Anh",
     "Lê Nguyễn Trung Mẫn"
@@ -80,7 +81,7 @@ fun AuthorSection() {
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.Start,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -129,7 +130,7 @@ fun AuthorSection() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AuthorRow(value = strongestMember)
-             }
+            }
         }
     }
 }
@@ -145,55 +146,58 @@ fun DetailSection() {
 //        elevation = CardDefaults.cardElevation(10.dp),
 //
 //    ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.app_title),
-                    fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Blue
-                )
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Dành cho học viên & giảng viên",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(79, 104, 196),
-                    fontStyle = FontStyle.Italic
-                )
-            }
+            Text(
+                text = stringResource(id = R.string.app_title),
+                fontSize = 35.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Blue
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Dành cho học viên & giảng viên",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(79, 104, 196),
+                fontStyle = FontStyle.Italic
+            )
         }
     }
+}
 //}
-/
 
 @Composable
 fun ImageSection() {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(modifier = Modifier
-            .size(400.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier
+                .size(400.dp)
             //.clip(CircleShape)
             //.border(5.dp, Color.Red, CircleShape)
-            ,painter = painterResource(id = R.drawable.homeicon),
+            , painter = painterResource(id = R.drawable.homeicon),
             contentDescription = "",
-            contentScale = ContentScale.Crop)
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
