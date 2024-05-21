@@ -16,10 +16,10 @@ fun BottomNavGraph(navController: NavHostController){
             ///gọi màn hình home
             HomeScreen()
         }
-        composable(route = BottomBarScreen.Products.route) {
+        composable(route = BottomBarScreen.Courses.route) {
             CoursesScreen()
         }
-        composable(route = BottomBarScreen.AddBook.route) {
+        composable(route = BottomBarScreen.AddCourses.route) {
             AddScreen()
         }
         composable(route = BottomBarScreen.Find.route) {

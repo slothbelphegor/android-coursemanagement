@@ -8,11 +8,11 @@ import retrofit2.http.*
 interface ApiService {
     @Headers("Accept:application/json")
     // read all
-    @GET("course") // gọi router.get bên phía api
+    @GET("courses") // gọi router.get bên phía api
     fun getAllCourses(): Call<List<Course>>
 
     // create
-    @POST("course")
+    @POST("courses")
     fun addCourse(@Body book: Course): Call<Course>
 
     // get by id (search)

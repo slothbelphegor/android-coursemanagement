@@ -18,12 +18,12 @@ sealed class BottomBarScreen (
         title = "Home",  //tên button hiện ra màn hình
         icon = Icons.Default.Home // icon sử dụng
     )
-    object Products: BottomBarScreen(
+    object Courses: BottomBarScreen(
         route = "courses",
         title = "Courses",  //tên button hiện ra màn hình
         icon = Icons.Default.AccountBox // icon sử dụng
     )
-    object AddBook: BottomBarScreen(
+    object AddCourses: BottomBarScreen(
         route = "add",
         title = "Add",  //tên button hiện ra màn hình
         icon = Icons.Default.Add // icon sử dụng

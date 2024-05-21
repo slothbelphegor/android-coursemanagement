@@ -6,9 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
     // IP address của API
-    const val BASE_URL = "http://192.168.43.247:3000"
+    private const val BASE_URL = "http://192.168.1.136:3000"
     // thiết lập kết nối đến API
-    val retrofit: Retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
