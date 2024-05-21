@@ -19,7 +19,7 @@ fun BottomNavGraph(navController: NavHostController){
         composable(route = BottomBarScreen.Courses.route) {
             CoursesScreen()
         }
-        composable(route = BottomBarScreen.AddCourses.route) {
+        composable(route = BottomBarScreen.AddCourse.route) {
             AddScreen()
         }
         composable(route = BottomBarScreen.Find.route) {

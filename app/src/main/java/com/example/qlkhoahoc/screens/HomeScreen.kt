@@ -48,7 +48,7 @@ fun AuthorRow(value: String) {
         Text(
             modifier = Modifier.padding(6.dp),
             text = value,
-            fontSize = 17.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Black
         )
@@ -191,7 +191,7 @@ fun ImageSection() {
     ) {
         Image(
             modifier = Modifier
-                .size(400.dp)
+                .size(350.dp)
             //.clip(CircleShape)
             //.border(5.dp, Color.Red, CircleShape)
             , painter = painterResource(id = R.drawable.homeicon),

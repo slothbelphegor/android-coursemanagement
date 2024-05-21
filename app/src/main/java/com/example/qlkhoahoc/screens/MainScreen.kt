@@ -2,6 +2,7 @@ package com.example.qlkhoahoc.screens
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +35,7 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Courses,
-        BottomBarScreen.AddCourses,
+        BottomBarScreen.AddCourse,
         BottomBarScreen.Find,
     )
     // biến nhớ vị trí của màn hình nào

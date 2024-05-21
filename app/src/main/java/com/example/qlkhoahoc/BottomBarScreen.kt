@@ -23,7 +23,7 @@ sealed class BottomBarScreen (
         title = "Courses",  //tên button hiện ra màn hình
         icon = Icons.Default.AccountBox // icon sử dụng
     )
-    object AddCourses: BottomBarScreen(
+    object AddCourse: BottomBarScreen(
         route = "add",
         title = "Add",  //tên button hiện ra màn hình
         icon = Icons.Default.Add // icon sử dụng
