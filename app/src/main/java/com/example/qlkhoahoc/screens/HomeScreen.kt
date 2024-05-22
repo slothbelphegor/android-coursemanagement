@@ -170,7 +170,7 @@ fun DetailSection() {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Dành cho học viên & giảng viên",
+                text = "Dành cho giảng viên",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(79, 104, 196),

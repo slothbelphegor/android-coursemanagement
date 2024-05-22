@@ -9,3 +9,8 @@ val Teal200 = Color(0xFF03DAC5)
 
 val bg1 = Color(0xff005aa7)
 val bg2 = Color(0xfffffde4)
+val backgroundColor = Color(204, 207, 220)
+
+val courseColor1 = Color(224, 223, 180)
+val courseColor2 = Color(186, 224, 180)
+val courseColor3 = Color(208, 180, 224)
