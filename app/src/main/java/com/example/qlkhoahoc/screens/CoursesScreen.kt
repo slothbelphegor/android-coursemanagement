@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 
 
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +32,6 @@ import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.*
 
 
-
 @Composable
 fun CoursesScreen() {
     var list by remember {
@@ -53,10 +51,8 @@ fun CoursesScreen() {
                         backgroundColor, bg2
                     )
                 )
-            ),
-        contentAlignment = Alignment.TopCenter
-    ) {
-    }
+            ), contentAlignment = Alignment.TopCenter
+    ) {}
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,22 +64,37 @@ fun CoursesScreen() {
         showCourses(list = list)
     }
 }
-val courseColors = listOf( courseColor1, courseColor2, courseColor3)
-var colorIndex = 0
+
+val courseColors = listOf(courseColor1, courseColor2, courseColor3)
+//var colorIndex = 0
+
+//@Composable
+//fun showCourses(list: MutableList<Course>) {
+//    LazyColumn(
+//        contentPadding = PaddingValues(all = 6.dp), verticalArrangement = Arrangement.spacedBy(2.dp)
+//    ) {
+//        items(list) { course ->
+//            CourseItem(course = course, courseColors[colorIndex])
+//            if (colorIndex >= courseColors.size) {
+//                colorIndex = 0
+//            } else {
+//                colorIndex += 1
+//            }
+//        }
+//    }
+//}
+
 @Composable
 fun showCourses(list: MutableList<Course>) {
+    var colorIndex = 0
+
     LazyColumn(
         contentPadding = PaddingValues(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         items(list) { course ->
             CourseItem(course = course, courseColors[colorIndex])
-            if (colorIndex >= courseColors.size) {
-                colorIndex = 0
-            }
-            else {
-                colorIndex += 1
-            }
+            colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
 }
@@ -92,9 +103,7 @@ fun showCourses(list: MutableList<Course>) {
 fun CourseItem(course: Course, bgColor: Color) {
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth(),
-        contentAlignment = Alignment.TopCenter
+        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter
     ) {
         Card(
             modifier = Modifier
@@ -109,15 +118,14 @@ fun CourseItem(course: Course, bgColor: Color) {
                         .fillMaxWidth()
                         .background(bgColor)
                 ) {
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column (modifier = Modifier.weight(2f)){
+                        Column(modifier = Modifier.weight(2f)) {
                             course.categoryId?.let {
                                 Text(
-                                    modifier = Modifier
-                                        .padding(1.dp),
-                                    text =  "${course.categoryId}",
+                                    modifier = Modifier.padding(1.dp),
+                                    text = "${course.categoryId}",
                                     color = Color.Black,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Normal
@@ -125,9 +133,8 @@ fun CourseItem(course: Course, bgColor: Color) {
                             }
                             course.courseName?.let {
                                 Text(
-                                    modifier = Modifier
-                                        .padding(10.dp),
-                                    text =  "${course.courseName}",
+                                    modifier = Modifier.padding(10.dp),
+                                    text = "${course.courseName}",
                                     color = Color.Black,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
@@ -142,8 +149,8 @@ fun CourseItem(course: Course, bgColor: Color) {
                             contentAlignment = Alignment.CenterEnd
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "")
+                                imageVector = Icons.Default.Menu, contentDescription = ""
+                            )
                         }
                     }
 
@@ -151,11 +158,10 @@ fun CourseItem(course: Course, bgColor: Color) {
                     course.description?.let {
                         Row {
                             Icon(
-                                imageVector = Icons.Default.Info,
-                                contentDescription = "")
+                                imageVector = Icons.Default.Info, contentDescription = ""
+                            )
                             Text(
-                                modifier = Modifier
-                                    .padding(start = 6.dp),
+                                modifier = Modifier.padding(start = 6.dp),
                                 text = it,
                                 color = Color.Black,
                                 fontSize = 18.sp,
@@ -172,14 +178,14 @@ fun CourseItem(course: Course, bgColor: Color) {
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun CoursesPreview() {
-    CourseItem(Course("2",
-        "Lập trình Python căn bảnnnnnnnnnnnnnnnnnnnnnnn nnnnnnnnnnnnnnn",
-        "Với vỏn vẹn 1 video thời lượng 12 tiếng, Bro Code đã cung cấp đầy đủ những" +
-                " kiến thức căn bản nhất về Python. Khóa học này được nhiều người đón nhận nhờ" +
-                " tính dễ tiếp cận và gần gũi của nó. ",
-    "image","Video",2,1), courseColor1)
-
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun CoursesPreview() {
+//    CourseItem(Course("2",
+//        "Lập trình Python căn bảnnnnnnnnnnnnnnnnnnnnnnn nnnnnnnnnnnnnnn",
+//        "Với vỏn vẹn 1 video thời lượng 12 tiếng, Bro Code đã cung cấp đầy đủ những" +
+//                " kiến thức căn bản nhất về Python. Khóa học này được nhiều người đón nhận nhờ" +
+//                " tính dễ tiếp cận và gần gũi của nó. ",
+//    "image","Video",2,1), courseColor1)
+//
+//}

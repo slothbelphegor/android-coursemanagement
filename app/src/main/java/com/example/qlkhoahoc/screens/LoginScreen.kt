@@ -1,7 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-
-package com.whitebatcodes.myloginapplication.interfaces
-
+package com.example.qlkhoahoc.screens
+//package com.whitebatcodes.myloginapplication.interfaces
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

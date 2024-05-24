@@ -8,7 +8,7 @@ import com.example.qlkhoahoc.screens.AddScreen
 import com.example.qlkhoahoc.screens.FindScreen
 import com.example.qlkhoahoc.screens.HomeScreen
 import com.example.qlkhoahoc.screens.CoursesScreen
-import com.whitebatcodes.myloginapplication.interfaces.LoginScreen
+import com.example.qlkhoahoc.screens.LoginScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController){
