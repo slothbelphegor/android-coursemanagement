@@ -31,7 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,11 +41,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import com.example.qlkhoahoc.methods.auth.login
+import com.example.qlkhoahoc.model.LoginData
 import com.example.qlkhoahoc.ui.theme.backgroundColor
 
 
 @Composable
 fun LoginScreen() {
+    val context = LocalContext.current
+    var tk : String
+
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var loggedIn by remember { mutableStateOf(false) }
+
+    fun performLogin(username: String, password: String) {
+        val loginData = LoginData(username, password)
+        login(context, loginData) { success, token ->
+            loggedIn = success
+            tk = token
+        }
+    }
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,16 +71,15 @@ fun LoginScreen() {
             .background(backgroundColor)
     ) {
         LoginField(
-            value = "Nhập tên tài khoản",
-            onChange = { },
+            value = username,
+            onChange = { username = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
         PasswordField(
-            value = "Password",
-            onChange = { },
+            value = password,
+            onChange = { password = it },
             submit = {
-
             },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
         )
@@ -79,7 +95,7 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-
+                performLogin(username, password)
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
@@ -100,8 +116,6 @@ fun LoginScreen() {
         }
     }
 }
-
-
 
 
 data class Credentials(
@@ -141,7 +155,7 @@ fun LoginField(
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Tên tài khoản",
-    placeholder: String = "Tên tài khoản"
+    placeholder: String = "Nhập tên tài khoản"
 ) {
 
     val leadingIcon = @Composable {

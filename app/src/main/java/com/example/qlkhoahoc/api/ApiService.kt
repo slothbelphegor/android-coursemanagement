@@ -2,6 +2,9 @@ package com.example.qlkhoahoc.api
 
 
 import com.example.qlkhoahoc.model.Course
+import com.example.qlkhoahoc.model.LoginData
+import com.example.qlkhoahoc.model.LoginResponse
+import com.example.qlkhoahoc.model.User
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -13,9 +16,14 @@ interface ApiService {
 
     // create
     @POST("courses")
-    fun addCourse(@Body book: Course): Call<Course>
+    fun addCourse(@Body course: Course): Call<Course>
 
     // get by id (search)
     @GET("courses/{id}")
     fun getById(@Path("id") id:Int): Call<List<Course>> // nếu chỉ trả về 1 book sẽ gây ra lỗi khó sửa
+
+    @POST("auth/login")
+    fun login(@Body loginData: LoginData): Call<LoginResponse>
+
+
 }
