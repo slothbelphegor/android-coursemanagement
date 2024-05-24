@@ -12,10 +12,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.qlkhoahoc.screens.HomeScreen
 import com.example.qlkhoahoc.screens.MainScreen
 import com.example.qlkhoahoc.ui.theme.QlkhoahocTheme
 
+
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

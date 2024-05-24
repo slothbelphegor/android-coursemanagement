@@ -8,13 +8,15 @@ import com.example.qlkhoahoc.screens.AddScreen
 import com.example.qlkhoahoc.screens.FindScreen
 import com.example.qlkhoahoc.screens.HomeScreen
 import com.example.qlkhoahoc.screens.CoursesScreen
+import com.whitebatcodes.myloginapplication.interfaces.LoginScreen
+
 @Composable
 fun BottomNavGraph(navController: NavHostController){
     NavHost(navController = navController,
         startDestination = BottomBarScreen.Home.route) { //mặc định mở home trước
         composable(route = BottomBarScreen.Home.route) {
             ///gọi màn hình home
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Courses.route) {
             CoursesScreen()
@@ -25,5 +27,7 @@ fun BottomNavGraph(navController: NavHostController){
         composable(route = BottomBarScreen.Find.route) {
             FindScreen()
         }
+        composable("login") { LoginScreen() }
+        composable("home") { HomeScreen(navController) }
     }
 }

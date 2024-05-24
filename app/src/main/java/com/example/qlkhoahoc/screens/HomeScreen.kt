@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -21,13 +22,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 
 
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.R
+import com.example.qlkhoahoc.ui.theme.backgroundColor
 
 val members1: List<String> = listOf(
     "Trần Đình An",
@@ -56,11 +60,12 @@ fun AuthorRow(value: String) {
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(204, 207, 220)),
+            .background(backgroundColor),
         contentAlignment = Alignment.TopCenter // trên xuống, căn giữa
 
     ) {
@@ -68,6 +73,13 @@ fun HomeScreen() {
             DetailSection()
             ImageSection()
             AuthorSection()
+            Button( onClick = { navController.navigate("login") },
+                modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = "Đăng nhập/Đăng ký",
+                    style = TextStyle(fontSize = 14.sp)
+                )
+            }
         }
     }
 }
@@ -204,5 +216,6 @@ fun ImageSection() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomePreview() {
-    HomeScreen()
+
+    HomeScreen(rememberNavController())
 }
