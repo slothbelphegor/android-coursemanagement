@@ -9,5 +9,6 @@ data class Course(
     @SerializedName("image"       ) var image       : String? = null,
     @SerializedName("video"       ) var video       : String? = null,
     @SerializedName("category_id" ) var categoryId  : Int?    = null,
-    @SerializedName("is_deleted"  ) var isDeleted   : Int?    = null
+    @SerializedName("is_deleted"  ) var isDeleted   : Int?    = null,
+    val categoryName: String
 )

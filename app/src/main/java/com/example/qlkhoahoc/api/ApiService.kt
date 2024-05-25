@@ -1,10 +1,7 @@
 package com.example.qlkhoahoc.api
 
 
-import com.example.qlkhoahoc.model.Course
-import com.example.qlkhoahoc.model.LoginData
-import com.example.qlkhoahoc.model.LoginResponse
-import com.example.qlkhoahoc.model.User
+import com.example.qlkhoahoc.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -25,5 +22,6 @@ interface ApiService {
     @POST("auth/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
 
-
+    @GET("categories")
+    fun getAllCategories(): Call<List<Category>>
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.qlkhoahoc.methods.getAllCategories
 import com.example.qlkhoahoc.methods.getAllCourses
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.*
@@ -37,6 +38,9 @@ fun CoursesScreen() {
     var list by remember {
         mutableStateOf(mutableListOf<Course>())
     }
+
+
+
     // Goi ham API va nhan ket qua tra ve thong qua callback
     getAllCourses {
         list = it
@@ -87,20 +91,27 @@ val courseColors = listOf(courseColor1, courseColor2, courseColor3)
 @Composable
 fun showCourses(list: MutableList<Course>) {
     var colorIndex = 0
+    var categoryMap by remember {
+        mutableStateOf(mapOf<Int, String>())
+    }
 
+    getAllCategories { categories ->
+        categoryMap = categories.associateBy({ it.categoryId!! }, { it.categoryName!! })
+    }
     LazyColumn(
         contentPadding = PaddingValues(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         items(list) { course ->
-            CourseItem(course = course, courseColors[colorIndex])
+            CourseItem(course = course, courseColors[colorIndex], categoryMap)
             colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
 }
 
 @Composable
-fun CourseItem(course: Course, bgColor: Color) {
+fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
+    val categoryName = categoryMap[course.categoryId] ?: "Unknown Category"
 
     Box(
         modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter
@@ -125,7 +136,7 @@ fun CourseItem(course: Course, bgColor: Color) {
                             course.categoryId?.let {
                                 Text(
                                     modifier = Modifier.padding(1.dp),
-                                    text = "${course.categoryId}",
+                                    text = categoryName,
                                     color = Color.Black,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Normal
