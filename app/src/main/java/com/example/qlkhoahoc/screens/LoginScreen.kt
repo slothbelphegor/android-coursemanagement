@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.qlkhoahoc.screens
 //package com.whitebatcodes.myloginapplication.interfaces
 
@@ -49,7 +50,7 @@ import com.example.qlkhoahoc.ui.theme.backgroundColor
 @Composable
 fun LoginScreen() {
     val context = LocalContext.current
-    var tk : String
+    var tk: String
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -73,7 +74,9 @@ fun LoginScreen() {
         LoginField(
             value = username,
             onChange = { username = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
         PasswordField(
@@ -81,10 +84,14 @@ fun LoginScreen() {
             onChange = { password = it },
             submit = {
             },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier.align(Alignment.Start).padding(horizontal = 25.dp)) {
+        Row(modifier = Modifier
+            .align(Alignment.Start)
+            .padding(horizontal = 25.dp)) {
             LabeledCheckbox(
                 label = "Ghi nhớ đăng nhập",
                 onCheckChanged = {
@@ -99,7 +106,9 @@ fun LoginScreen() {
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
         ) {
             Text("Đăng nhập")
         }
@@ -110,7 +119,9 @@ fun LoginScreen() {
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
         ) {
             Text("Đăng ký")
         }

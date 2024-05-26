@@ -17,7 +17,11 @@ interface ApiService {
 
     // get by id (search)
     @GET("courses/{id}")
-    fun getById(@Path("id") id:Int): Call<List<Course>> // nếu chỉ trả về 1 book sẽ gây ra lỗi khó sửa
+    fun getById(@Path("id") id:String): Call<List<Course>> // nếu chỉ trả về 1 book sẽ gây ra lỗi khó sửa
+
+    // Edit course
+    @PUT("courses/{id}")
+    fun editCourse(@Path("id") id: String, @Body course: Course): Call<Course>
 
     @POST("auth/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>

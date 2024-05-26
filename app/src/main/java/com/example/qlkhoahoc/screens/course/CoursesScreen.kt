@@ -1,6 +1,7 @@
 package com.example.qlkhoahoc.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 
@@ -27,6 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import com.example.qlkhoahoc.methods.getAllCategories
 import com.example.qlkhoahoc.methods.getAllCourses
 import com.example.qlkhoahoc.model.Course
@@ -34,11 +37,10 @@ import com.example.qlkhoahoc.ui.theme.*
 
 
 @Composable
-fun CoursesScreen() {
+fun CoursesScreen(navController: NavHostController) {
     var list by remember {
         mutableStateOf(mutableListOf<Course>())
     }
-
 
 
     // Goi ham API va nhan ket qua tra ve thong qua callback
@@ -65,7 +67,7 @@ fun CoursesScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        showCourses(list = list)
+        showCourses(list = list, navController)
     }
 }
 
@@ -89,7 +91,7 @@ val courseColors = listOf(courseColor1, courseColor2, courseColor3)
 //}
 
 @Composable
-fun showCourses(list: MutableList<Course>) {
+fun showCourses(list: MutableList<Course>, navController: NavHostController) {
     var colorIndex = 0
     var categoryMap by remember {
         mutableStateOf(mapOf<Int, String>())
@@ -103,18 +105,25 @@ fun showCourses(list: MutableList<Course>) {
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         items(list) { course ->
-            CourseItem(course = course, courseColors[colorIndex], categoryMap)
+            CourseItem(
+                course = course,
+                courseColors[colorIndex],
+                categoryMap,
+                onClick = { navController.navigate("editCourse/${course.courseId}") })
             colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
 }
 
 @Composable
-fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
+fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>, onClick: () -> Unit) {
     val categoryName = categoryMap[course.categoryId] ?: "Unknown Category"
 
     Box(
-        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.TopCenter
     ) {
         Card(
             modifier = Modifier
@@ -192,11 +201,16 @@ fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
 //@Preview(showSystemUi = true, showBackground = true)
 //@Composable
 //fun CoursesPreview() {
-//    CourseItem(Course("2",
+//    val course = Course(
+//        "2",
 //        "Lập trình Python căn bảnnnnnnnnnnnnnnnnnnnnnnn nnnnnnnnnnnnnnn",
 //        "Với vỏn vẹn 1 video thời lượng 12 tiếng, Bro Code đã cung cấp đầy đủ những" +
 //                " kiến thức căn bản nhất về Python. Khóa học này được nhiều người đón nhận nhờ" +
-//                " tính dễ tiếp cận và gần gũi của nó. ",
-//    "image","Video",2,1), courseColor1)
+//                " tính dễ tiếp cận và gần gũi của nó.",
+//        "image", "Video", 2, 1, "Category 1"
+//    )
 //
+//    val categoryMap = mapOf(2 to "Category 1")
+//
+//    CourseItem(course, Color.Gray, categoryMap)
 //}

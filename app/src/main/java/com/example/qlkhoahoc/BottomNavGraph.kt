@@ -9,6 +9,7 @@ import com.example.qlkhoahoc.screens.FindScreen
 import com.example.qlkhoahoc.screens.HomeScreen
 import com.example.qlkhoahoc.screens.CoursesScreen
 import com.example.qlkhoahoc.screens.LoginScreen
+import com.example.qlkhoahoc.screens.course.EditCourseScreen
 
 @Composable
 fun BottomNavGraph(navController: NavHostController){
@@ -19,7 +20,7 @@ fun BottomNavGraph(navController: NavHostController){
             HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Courses.route) {
-            CoursesScreen()
+            CoursesScreen(navController)
         }
         composable(route = BottomBarScreen.AddCourse.route) {
             AddScreen()
@@ -29,5 +30,11 @@ fun BottomNavGraph(navController: NavHostController){
         }
         composable("login") { LoginScreen() }
         composable("home") { HomeScreen(navController) }
+        composable("editCourse/{courseId}") { backStackEntry ->
+            EditCourseScreen(
+                navController = navController,
+                courseId = backStackEntry.arguments?.getString("courseId")
+            )
+        }
     }
 }
