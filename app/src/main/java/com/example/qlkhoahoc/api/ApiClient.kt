@@ -22,7 +22,7 @@ object ApiClient {
         }
     }.build()
     // IP address của API
-    private const val BASE_URL = "http://192.168.1.144:3000"
+    private const val BASE_URL = "http://192.168.1.8:3000"
     // thiết lập kết nối đến API
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
