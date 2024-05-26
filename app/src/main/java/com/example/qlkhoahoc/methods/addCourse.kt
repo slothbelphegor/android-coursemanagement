@@ -16,17 +16,20 @@ fun addCourse(course: Course, callback: (Boolean) -> Unit) {
         override fun onResponse(call: Call<Course>, response: Response<Course>) {
             if (response.isSuccessful) {
                 rs = true
-                Log.d("Add","Success")
+                Log.d("Add","Success Response")
             }
             else {
                 rs = false
-                Log.d("Add","Failed")
+                Log.d("Add","Failed Response")
+                Log.d("Response", response.toString())
             }
             callback.invoke(rs)
         }
 
         override fun onFailure(call: Call<Course>, t: Throwable) {
             callback.invoke(false)
+            Log.d("Add","Failed")
+
         }
 
     })

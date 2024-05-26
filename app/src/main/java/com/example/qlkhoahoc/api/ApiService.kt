@@ -24,4 +24,8 @@ interface ApiService {
 
     @GET("categories")
     fun getAllCategories(): Call<List<Category>>
+
+    @GET("courses/search")
+    fun findCourse(@Query("key") searchTerm: String): Call<MutableList<Course>>
+
 }
