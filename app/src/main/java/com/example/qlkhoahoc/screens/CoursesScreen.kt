@@ -1,5 +1,6 @@
 package com.example.qlkhoahoc.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -27,14 +29,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.methods.getAllCategories
 import com.example.qlkhoahoc.methods.getAllCourses
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.*
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 @Composable
-fun CoursesScreen() {
+fun CoursesScreen(navController: NavHostController) {
+
     var list by remember {
         mutableStateOf(mutableListOf<Course>())
     }
@@ -65,7 +75,7 @@ fun CoursesScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        showCourses(list = list)
+        showCourses(list = list,navController)
     }
 }
 
@@ -89,7 +99,7 @@ val courseColors = listOf(courseColor1, courseColor2, courseColor3)
 //}
 
 @Composable
-fun showCourses(list: MutableList<Course>) {
+fun showCourses(list: MutableList<Course>,navController: NavHostController) {
     var colorIndex = 0
     var categoryMap by remember {
         mutableStateOf(mapOf<Int, String>())
@@ -98,19 +108,21 @@ fun showCourses(list: MutableList<Course>) {
     getAllCategories { categories ->
         categoryMap = categories.associateBy({ it.categoryId!! }, { it.categoryName!! })
     }
+
+
     LazyColumn(
         contentPadding = PaddingValues(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         items(list) { course ->
-            CourseItem(course = course, courseColors[colorIndex], categoryMap)
+            CourseItem(course = course, courseColors[colorIndex], categoryMap, navController)
             colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
 }
 
 @Composable
-fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
+fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>,navController: NavHostController) {
     val categoryName = categoryMap[course.categoryId] ?: "Unknown Category"
 
     Box(
@@ -155,22 +167,31 @@ fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
                             }
                         }
                         Spacer(modifier = Modifier.width(4.dp)) // Tạo khoảng cách giữa Text và Icon
+
                         Box(
 
                             contentAlignment = Alignment.CenterEnd
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Menu, contentDescription = ""
-                            )
+                            IconButton(onClick = {
+                                val courseJson = URLEncoder.encode(Gson().toJson(course), StandardCharsets.UTF_8.toString())
+                                val bgColorLong = bgColor.value
+                                val encodedCategoryName = URLEncoder.encode(categoryName, StandardCharsets.UTF_8.toString())
+                                navController.navigate("course_detail/$courseJson/$bgColorLong/$encodedCategoryName")
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu, contentDescription = ""
+                                )
+                            }
+
                         }
                     }
 
 
                     course.description?.let {
                         Row {
-                            Icon(
-                                imageVector = Icons.Default.Info, contentDescription = ""
-                            )
+                            IconButton(onClick = {  }) {
+
+                            }
                             Text(
                                 modifier = Modifier.padding(start = 6.dp),
                                 text = it,
@@ -187,6 +208,11 @@ fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>) {
 
         }
     }
+}
+
+@Composable
+fun showCourseDetail(course: Course, bgColor: Color, categoryName: String) {
+    CourseDetailScreen(course = course, backgroundColor = bgColor, categoryName = categoryName)
 }
 
 //@Preview(showSystemUi = true, showBackground = true)

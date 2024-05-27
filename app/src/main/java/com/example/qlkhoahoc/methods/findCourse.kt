@@ -17,7 +17,7 @@ fun findCourse(searchTerm: String, callback: (MutableList<Course>) -> Unit) {
         override fun onResponse(call: Call<MutableList<Course>>, response: Response<MutableList<Course>>) {
             if (response.isSuccessful) {
                 val r = response.body()
-                rs = if (r != null && r.isNotEmpty()) {
+                rs = if (r != null && r.isEmpty()) {
                     r
 
                 } else {
