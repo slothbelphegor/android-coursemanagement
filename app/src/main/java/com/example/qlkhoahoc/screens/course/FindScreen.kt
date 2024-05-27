@@ -13,16 +13,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.qlkhoahoc.screens.course.showCourses
+
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.methods.findCourse
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.backgroundColor
@@ -91,6 +88,7 @@ fun Find(navController: NavHostController) {
             )
         )
         showCourses(list = list, navController)
+        // showCourses(list = courseList, rememberNavController())
 
     }
 }
