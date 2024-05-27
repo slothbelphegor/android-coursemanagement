@@ -13,7 +13,7 @@ interface ApiService {
 
     // create
     @POST("courses")
-    fun addCourse(@Body course: Course): Call<Course>
+    fun addCourse(@Header("Authorization") token: String, @Body course: CourseAdd): Call<ApiResponse>
 
     // get by id (search)
     @GET("courses/{id}")

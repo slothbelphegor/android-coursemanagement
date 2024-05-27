@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.screens.*
+import com.example.qlkhoahoc.screens.course.AddScreen
 import com.example.qlkhoahoc.screens.course.CoursesScreen
 import com.example.qlkhoahoc.screens.course.EditCourseScreen
 import com.google.gson.Gson
