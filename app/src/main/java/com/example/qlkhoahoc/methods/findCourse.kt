@@ -9,7 +9,7 @@ import retrofit2.Response
 
 fun findCourse(searchTerm: String, callback: (MutableList<Course>) -> Unit) {
     val courseNull = mutableListOf<Course>(Course("","Không tìm thấy","Không tìm thấy","Không tìm thấy",
-        "Không tìm thấy",0))
+        "Không tìm thấy",0, 0, "Không tìm thấy"))
     var rs: MutableList<Course>
     val call = ApiClient.apiService.findCourse(searchTerm)
 
@@ -17,6 +17,7 @@ fun findCourse(searchTerm: String, callback: (MutableList<Course>) -> Unit) {
         override fun onResponse(call: Call<MutableList<Course>>, response: Response<MutableList<Course>>) {
             if (response.isSuccessful) {
                 val r = response.body()
+                Log.d("check", r.toString())
                 rs = if (r != null && r.isNotEmpty()) {
                     r
 

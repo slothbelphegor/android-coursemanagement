@@ -26,7 +26,7 @@ fun BottomNavGraph(navController: NavHostController){
             AddScreen()
         }
         composable(route = BottomBarScreen.Find.route) {
-            FindScreen()
+            FindScreen(navController)
         }
         composable("login") { LoginScreen() }
         composable("home") { HomeScreen(navController) }

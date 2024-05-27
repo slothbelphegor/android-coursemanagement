@@ -21,7 +21,7 @@ interface ApiService {
 
     // Edit course
     @PUT("courses/{id}")
-    fun editCourse(@Path("id") id: String, @Body course: Course): Call<Course>
+    fun editCourse(@Header("Authorization") token: String, @Path("id") id: String, @Body course: Course): Call<Course>
 
     @POST("auth/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
@@ -30,6 +30,6 @@ interface ApiService {
     fun getAllCategories(): Call<List<Category>>
 
     @GET("courses/search")
-    fun findCourse(@Query("key") searchTerm: String): Call<MutableList<Course>>
+    fun findCourse(@Query("searchTerm") searchTerm: String): Call<MutableList<Course>>
 
 }

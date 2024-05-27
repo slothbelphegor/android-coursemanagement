@@ -12,7 +12,7 @@ import retrofit2.Response
 fun editCourse(context: Context, courseId: String, updatedCourse: Course, callback: (Course?) -> Unit) {
     val token = TokenManager.getToken(context)
     token?.let { authToken ->
-        val call = ApiClient.apiService.editCourse(courseId, updatedCourse, authToken)
+        val call = ApiClient.apiService.editCourse(authToken, courseId, updatedCourse)
 
         call.enqueue(object : Callback<Course> {
             override fun onResponse(call: Call<Course>, response: Response<Course>) {

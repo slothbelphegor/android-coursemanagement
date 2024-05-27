@@ -10,4 +10,5 @@ data class Course(
     @SerializedName("video"       ) var video: String? = null,
     @SerializedName("category_id" ) var categoryId: Int?    = null,
     @SerializedName("is_deleted"  ) var isDeleted: Int?    = null,
+    var categoryName: String? = null
 )
