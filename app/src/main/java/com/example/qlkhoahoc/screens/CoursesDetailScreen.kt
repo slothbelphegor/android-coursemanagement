@@ -30,12 +30,16 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import com.example.qlkhoahoc.R
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.screens.course.EditCourseScreen
 import com.example.qlkhoahoc.ui.theme.courseColor1
 
 
+//chỉ tới thư mục upload của api
+private const val URL_IMAGE = "http://192.168.1.3/uploads/"
 
 @Composable
 fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: String, navController: NavHostController) {
@@ -59,14 +63,29 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                     }
                 }
             )
-            Image(
-                painter = painterResource(R.drawable.homeicon), // Reference your image resource
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
-                contentScale = ContentScale.Crop
-            )
+            Row (modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)) {
+                course.image?.let {
+                    val p = rememberImagePainter(
+                        data = URL_IMAGE +it,
+                        builder =  {
+                            placeholder(R.drawable.ic_launcher_background)
+                            error(R.drawable.noimage)
+                            crossfade(1000) // thời gian hiển thị từ placeholder sang hình
+                            transformations( // gọt tròn các góc hình
+                                RoundedCornersTransformation(50f)
+                            )
+                            size(2000,1000)
+                        })
+                    Image(
+                        modifier = Modifier.padding(6.dp).fillMaxWidth(),
+                        painter = p,
+                        contentDescription = "")
+
+                }
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = categoryName,
