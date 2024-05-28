@@ -36,7 +36,7 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Find.route) {
             FindScreen(navController)
         }
-        composable("login") { LoginScreen() }
+        composable("login") { LoginScreen(navController) }
         composable("home") { HomeScreen(navController) }
 
         composable("editCourse/{courseId}") { backStackEntry ->

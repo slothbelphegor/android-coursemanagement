@@ -4,6 +4,11 @@ package com.example.qlkhoahoc.screens
 //package com.whitebatcodes.myloginapplication.interfaces
 
 import android.util.Log
+
+import android.widget.Toast
+
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,11 +30,7 @@ import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,16 +42,21 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.methods.auth.login
 import com.example.qlkhoahoc.model.LoginData
 import com.example.qlkhoahoc.ui.theme.backgroundColor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     var tk: String
 
     var username by remember { mutableStateOf("") }
@@ -90,20 +96,32 @@ fun LoginScreen() {
                 .padding(horizontal = 25.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier
-            .align(Alignment.Start)
-            .padding(horizontal = 25.dp)) {
-            LabeledCheckbox(
-                label = "Ghi nhớ đăng nhập",
-                onCheckChanged = {
-                },
-                isChecked = false
-            )
-        }
+//        Row(modifier = Modifier
+//            .align(Alignment.Start)
+//            .padding(horizontal = 25.dp)) {
+//            LabeledCheckbox(
+//                label = "Ghi nhớ đăng nhập",
+//                onCheckChanged = {
+//                },
+//                isChecked = false
+//            )
+//        }
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
+                Log.d("LoggedIn before perform",loggedIn.toString())
                 performLogin(username, password)
+                coroutineScope.launch {
+                    delay(1000L) // Đợi 1 giây
+                    Log.d("LoggedIn after perform", loggedIn.toString())
+                    if (loggedIn) {
+                        navController.navigate("home")
+                        Toast.makeText(context,"Login Successful",Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        Toast.makeText(context,"Login Failed",Toast.LENGTH_SHORT).show()
+                    }
+                }
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
@@ -244,7 +262,7 @@ fun PasswordField(
 @Composable
 fun LoginPreview() {
 
-    LoginScreen()
+    LoginScreen(rememberNavController())
 }
 
 
