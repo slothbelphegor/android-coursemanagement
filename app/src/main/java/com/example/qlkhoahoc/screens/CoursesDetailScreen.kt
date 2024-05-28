@@ -38,17 +38,29 @@ import com.example.qlkhoahoc.screens.course.EditCourseScreen
 import com.example.qlkhoahoc.ui.theme.courseColor1
 
 
-//chỉ tới thư mục upload của api
-private const val URL_IMAGE = "http://192.168.1.3/uploads/"
+@Composable
+fun getApiUrl(context: Context): String {
+    val apiUrl = context.getString(R.string.URL_API)
+    val port = context.getString(R.string.PORT)
+    return "$apiUrl:$port/uploads/"
+}
 
 @Composable
-fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: String, navController: NavHostController) {
+fun CourseDetailScreen(
+    course: Course,
+    backgroundColor: Color,
+    categoryName: String,
+    navController: NavHostController
+) {
     var showWatchDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(backgroundColor)) {
+    val URL_IMAGE = getApiUrl(context)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
             TopAppBar(
                 title = {
@@ -59,29 +71,38 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                     IconButton(onClick = {
                         navController.navigate("editCourse/${course.courseId}")
                     }) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit", tint = Color.Black)
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = Color.Black
+                        )
                     }
                 }
             )
-            Row (modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+            ) {
                 course.image?.let {
                     val p = rememberImagePainter(
-                        data = URL_IMAGE +it,
-                        builder =  {
+                        data = URL_IMAGE + it,
+                        builder = {
                             placeholder(R.drawable.ic_launcher_background)
                             error(R.drawable.noimage)
                             crossfade(1000) // thời gian hiển thị từ placeholder sang hình
                             transformations( // gọt tròn các góc hình
                                 RoundedCornersTransformation(50f)
                             )
-                            size(2000,1000)
+                            size(2000, 1000)
                         })
                     Image(
-                        modifier = Modifier.padding(6.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .fillMaxWidth(),
                         painter = p,
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
 
                 }
             }
@@ -94,7 +115,11 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(
+                color = Color.Gray,
+                thickness = 1.dp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
             course.courseName?.let {
@@ -106,7 +131,11 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(
+                color = Color.Gray,
+                thickness = 1.dp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.height(8.dp))
             course.description?.let {
                 Text(
@@ -116,11 +145,17 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(
+                color = Color.Gray,
+                thickness = 1.dp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
                 course.video?.let { watchVideoButton(context = context, it) }
             }
         }
@@ -159,7 +194,10 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
         if (showEditDialog) {
             Dialog(
                 onDismissRequest = { showEditDialog = false },
-                properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+                properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true
+                )
             ) {
                 Box(
                     modifier = Modifier
@@ -241,7 +279,11 @@ fun GradientButton(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCourseDetailScreen() {
-    CourseDetailScreen(Course("0","Python cơ bản",
-    "Lập trình Python căn bản","homeicon.png","video",
-    0,0), courseColor1,"Lập trình", rememberNavController())
+    CourseDetailScreen(
+        Course(
+            "0", "Python cơ bản",
+            "Lập trình Python căn bản", "homeicon.png", "video",
+            0, 0
+        ), courseColor1, "Lập trình", rememberNavController()
+    )
 }
