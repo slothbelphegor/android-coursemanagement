@@ -1,8 +1,9 @@
 package com.example.qlkhoahoc.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,13 +11,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ShoppingCart
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,16 +27,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.R
 import com.example.qlkhoahoc.model.Course
+import com.example.qlkhoahoc.screens.course.EditCourseScreen
 import com.example.qlkhoahoc.ui.theme.courseColor1
 
+
+
 @Composable
-fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: String) {
+fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: String, navController: NavHostController) {
     var showWatchDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
-
-    Box(modifier = Modifier.fillMaxSize().background(backgroundColor)) {
+    val context = LocalContext.current
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)) {
         Column(modifier = Modifier.fillMaxSize()) {
             TopAppBar(
                 title = {
@@ -42,7 +52,9 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
                 },
                 backgroundColor = (backgroundColor),
                 actions = {
-                    IconButton(onClick = { showEditDialog = true }) {
+                    IconButton(onClick = {
+                        navController.navigate("editCourse/${course.courseId}")
+                    }) {
                         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit", tint = Color.Black)
                     }
                 }
@@ -87,48 +99,43 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
             Spacer(modifier = Modifier.height(8.dp))
             Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
             Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                GradientButton(
-                    text = "Xem khóa học",
-                    onClick = { showWatchDialog = true },
-                    gradient = Brush.horizontalGradient(
-                        colors = listOf(Color(0xFF6200EA), Color(0xFF3700B3))
-                    ),
-                    modifier = Modifier.weight(1f)
-                )
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)) {
+                course.video?.let { watchVideoButton(context = context, it) }
             }
         }
 
-        if (showWatchDialog) {
-            Dialog(
-                onDismissRequest = { showWatchDialog = false },
-                properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White, shape = RoundedCornerShape(8.dp))
-                        .padding(16.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "Watch Course",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "You are now watching the Kotlin & Jetpack Compose course.",
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { showWatchDialog = false }) {
-                            Text(text = "OK")
-                        }
-                    }
-                }
-            }
-        }
+//        if (showWatchDialog) {
+//            Dialog(
+//                onDismissRequest = { showWatchDialog = false },
+//                properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .background(Color.White, shape = RoundedCornerShape(8.dp))
+//                        .padding(16.dp)
+//                ) {
+//                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+//                        Text(
+//                            text = "Watch Course",
+//                            fontSize = 20.sp,
+//                            fontWeight = FontWeight.Bold
+//                        )
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                        Text(
+//                            text = "You are now watching the Kotlin & Jetpack Compose course.",
+//                            textAlign = TextAlign.Center
+//                        )
+//                        Spacer(modifier = Modifier.height(16.dp))
+//                        Button(onClick = { showWatchDialog = false }) {
+//                            Text(text = "OK")
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         if (showEditDialog) {
             Dialog(
@@ -164,6 +171,21 @@ fun CourseDetailScreen(course: Course, backgroundColor: Color, categoryName: Str
 }
 
 @Composable
+fun watchVideoButton(context: Context, videoLink: String) {
+    GradientButton(
+        text = "Xem khóa học",
+        onClick = {
+            val url = videoLink
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        },
+        gradient = Brush.horizontalGradient(
+            colors = listOf(Color(0xFF6200EA), Color(0xFF3700B3))
+        ),
+    )
+}
+
+@Composable
 fun GradientButton(
     text: String,
     onClick: () -> Unit,
@@ -173,7 +195,10 @@ fun GradientButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .background(gradient, shape = RoundedCornerShape(24.dp)) // Updated to 24.dp for rounder corners
+            .background(
+                gradient,
+                shape = RoundedCornerShape(24.dp)
+            ) // Updated to 24.dp for rounder corners
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         contentPadding = PaddingValues()
@@ -181,7 +206,10 @@ fun GradientButton(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(gradient, shape = RoundedCornerShape(24.dp)) // Updated to 24.dp for rounder corners
+                .background(
+                    gradient,
+                    shape = RoundedCornerShape(24.dp)
+                ) // Updated to 24.dp for rounder corners
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -196,5 +224,5 @@ fun GradientButton(
 fun PreviewCourseDetailScreen() {
     CourseDetailScreen(Course("0","Python cơ bản",
     "Lập trình Python căn bản","homeicon.png","video",
-    0,0), courseColor1,"Lập trình")
+    0,0), courseColor1,"Lập trình", rememberNavController())
 }

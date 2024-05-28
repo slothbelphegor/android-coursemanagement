@@ -209,10 +209,7 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
     }
 }
 
-@Composable
-fun showCourseDetail(course: Course, bgColor: Color, categoryName: String) {
-    CourseDetailScreen(course = course, backgroundColor = bgColor, categoryName = categoryName)
-}
+
 
 //@Preview(showSystemUi = true, showBackground = true)
 //@Composable

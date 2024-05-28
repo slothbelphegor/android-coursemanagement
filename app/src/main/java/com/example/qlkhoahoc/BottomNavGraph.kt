@@ -79,7 +79,7 @@ fun BottomNavGraph(navController: NavHostController) {
                 Log.d("Course", course.toString())
                 Log.d("Color", bgColor.toString())
                 Log.d("Category",categoryName)
-                course?.let { CourseDetailScreen(it, bgColor, categoryName) }
+                course?.let { CourseDetailScreen(it, bgColor, categoryName, navController) }
             }
         }
     }
