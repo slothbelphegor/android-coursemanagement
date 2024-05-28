@@ -172,10 +172,10 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
                             contentAlignment = Alignment.CenterEnd
                         ) {
                             IconButton(onClick = {
-                                val courseJson = URLEncoder.encode(Gson().toJson(course), StandardCharsets.UTF_8.toString())
-                                val bgColorLong = bgColor.value
-                                val encodedCategoryName = URLEncoder.encode(categoryName, StandardCharsets.UTF_8.toString())
-                                navController.navigate("course_detail/$courseJson/$bgColorLong/$encodedCategoryName")
+
+                                val bgColorLong = bgColor.value.toLong()
+
+                                navController.navigate("course_detail/${course.courseId}/$bgColorLong/$categoryName")
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Menu, contentDescription = ""
