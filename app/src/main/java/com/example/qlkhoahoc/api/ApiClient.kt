@@ -1,5 +1,6 @@
 package com.example.qlkhoahoc.api
 
+import com.example.qlkhoahoc.R
 import com.example.qlkhoahoc.methods.auth.TokenManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -22,7 +23,7 @@ object ApiClient {
         }
     }.build()
     // IP address của API
-    private const val BASE_URL = "http://192.168.1.3:3000"
+    private const val BASE_URL = "http://192.168.1.14:3000"
     // thiết lập kết nối đến API
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
