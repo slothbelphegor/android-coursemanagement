@@ -21,7 +21,7 @@ interface ApiService {
 
     // Edit course
     @PUT("courses/{id}")
-    fun editCourse(@Header("Authorization") token: String, @Path("id") id: String, @Body course: Course): Call<Course>
+    fun editCourse(@Header("Authorization") token: String, @Path("id") id: String, @Body course: CourseAdd): Call<ApiResponse>
 
     @POST("auth/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
