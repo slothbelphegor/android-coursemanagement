@@ -22,6 +22,9 @@ fun addCourse(token: String, course: CourseAdd, callback: (Boolean) -> Unit) {
                     callback.invoke(true)
                 } else {
                     Log.d("Add", "Failed Response: ${response.errorBody()?.string()}")
+                    if (responseBody != null) {
+                        Log.d("Status?",responseBody.status)
+                    }
                     callback.invoke(false)
                 }
             } else {

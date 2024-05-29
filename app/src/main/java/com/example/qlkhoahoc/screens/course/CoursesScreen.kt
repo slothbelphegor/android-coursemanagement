@@ -99,7 +99,6 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
         categoryMap = categories.associateBy({ it.categoryId!! }, { it.categoryName!! })
     }
 
-
     LazyColumn(
         contentPadding = PaddingValues(all = 6.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
@@ -110,7 +109,7 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
                 courseColors[colorIndex],
                 categoryMap,
                 navController,
-                onClick = { navController.navigate("editCourse/${course.courseId}") })
+                onClick = {  })
                 colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
@@ -172,9 +171,7 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
                             contentAlignment = Alignment.CenterEnd
                         ) {
                             IconButton(onClick = {
-
                                 val bgColorLong = bgColor.value.toLong()
-
                                 navController.navigate("course_detail/${course.courseId}/$bgColorLong/$categoryName")
                             }) {
                                 Icon(

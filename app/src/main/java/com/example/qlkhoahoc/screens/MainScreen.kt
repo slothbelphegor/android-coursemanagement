@@ -3,8 +3,8 @@ package com.example.qlkhoahoc.screens
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -14,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.BottomBarScreen
 import com.example.qlkhoahoc.BottomNavGraph
+import com.example.qlkhoahoc.methods.auth.TokenManager
+import com.example.qlkhoahoc.model.decodeJWT
 
 @Composable
 fun MainScreen() {
@@ -31,11 +33,21 @@ fun MainScreen() {
 // vẽ bottom bar (gồm có 4 icon để gọi 4 màn hình)
 @Composable
 fun BottomBar(navController: NavHostController) {
+    val context = LocalContext.current
+    val token = TokenManager.getToken(context).toString()
+    val tokenData = decodeJWT(token)
+    val roleId = remember { mutableStateOf(0) }
+
+    LaunchedEffect(token) {
+        if (tokenData != null) {
+            roleId.value = tokenData.roleId
+        }
+    }
     //danh sách các màn hình
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Courses,
-        BottomBarScreen.AddCourse,
+        if (roleId.value == 1) BottomBarScreen.AddCourse else null,
         BottomBarScreen.Find,
     )
     // biến nhớ vị trí của màn hình nào
@@ -44,11 +56,12 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
     // vẽ các icon cho bottom bar
     BottomNavigation() {
-        screens.forEach { scr ->
+        screens.filterNotNull().forEach { scr ->
             AddItem(
                 screen = scr,
                 currentDestination = currentDestination,
-                navController = navController)
+                navController = navController
+            )
         }
     }
 

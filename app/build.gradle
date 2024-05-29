@@ -79,4 +79,8 @@ dependencies {
 
     //load image
     implementation 'io.coil-kt:coil-compose:2.4.0'
+
+    //jwt decode
+    implementation 'com.auth0:java-jwt:3.18.2'
+
 }

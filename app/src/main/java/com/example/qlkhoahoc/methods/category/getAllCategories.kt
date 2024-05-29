@@ -20,6 +20,7 @@ fun getAllCategories(callback: (MutableList<Category>) -> Unit) {
                 response.body()?.let {
                     list = it as MutableList<Category>
                 }
+                Log.d("number of courses", list.size.toString())
                 callback.invoke(list)
             } else {
                 Log.d("Check", "Check in else")

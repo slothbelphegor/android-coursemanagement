@@ -32,7 +32,6 @@ fun AddScreen() {
     val context = LocalContext.current
     val tk: String = "Bearer " + TokenManager.getToken(context).toString()
     Log.d("Token: ", tk)
-
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -1,5 +1,6 @@
 package com.example.qlkhoahoc.screens
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -20,6 +21,7 @@ import androidx.compose.material3.*
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -31,7 +33,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.R
+import com.example.qlkhoahoc.methods.auth.TokenManager
+import com.example.qlkhoahoc.model.TokenData
+import com.example.qlkhoahoc.model.decodeJWT
 import com.example.qlkhoahoc.ui.theme.backgroundColor
+
 
 val members1: List<String> = listOf(
     "Trần Đình An",
@@ -61,7 +67,18 @@ fun AuthorRow(value: String) {
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-
+    val context = LocalContext.current
+    val token = TokenManager.getToken(context).toString()
+    val tokenData = decodeJWT(token)
+    tokenData?.let {
+        Log.d("Token Data", "userId: ${it.userId}, username: ${it.username}, roleId: ${it.roleId}")
+        Text(text = "UserId: ${it.userId}")
+        Text(text = "Username: ${it.username}")
+        Text(text = "RoleId: ${it.roleId}")
+    } ?: run {
+        Log.d("Token Data", "Invalid token")
+        Text(text = "Invalid token")
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +87,7 @@ fun HomeScreen(navController: NavHostController) {
 
     ) {
         Column {
-            DetailSection()
+            DetailSection(tokenData)
             ImageSection()
             AuthorSection()
             Button( onClick = { navController.navigate("login") },
@@ -149,7 +166,7 @@ fun AuthorSection() {
 
 
 @Composable
-fun DetailSection() {
+fun DetailSection(tokenData: TokenData?) {
 //    Card(
 //        modifier = Modifier
 //            .padding(10.dp)
@@ -181,8 +198,9 @@ fun DetailSection() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
+            val displayText = tokenData?.username?.let { "Xin chào, $it!" } ?: "Dành cho mọi người"
             Text(
-                text = "Dành cho giảng viên",
+                text = displayText,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(79, 104, 196),

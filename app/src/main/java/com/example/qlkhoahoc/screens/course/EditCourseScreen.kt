@@ -1,6 +1,7 @@
 package com.example.qlkhoahoc.screens.course
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -170,13 +171,11 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
 
                     // Call editCourse
                     editCourse(tk, context, courseId!!, updatedCourse) { updatedCourse ->
-                        if (updatedCourse != null) {
-                            Log.d("EditCourseScreen", "Successfully updated course: $updatedCourse")
-                            navController.popBackStack()
-                        } else {
-                            Log.e("EditCourseScreen", "Failed to update course")
-                        }
+
                     }
+                    Log.d("EditCourseScreen", "Successfully updated course: $updatedCourse")
+                    Toast.makeText(context,"Course updated successfully",Toast.LENGTH_SHORT).show()
+                    navController.popBackStack()
                 }) {
                     Text(text = "Save")
                 }
