@@ -48,7 +48,7 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Courses,
-        if (roleId.value == 1) BottomBarScreen.AddCourse else null,
+        if (roleId.value == 2) BottomBarScreen.AddCourse else BottomBarScreen.AttendedCourses,
         BottomBarScreen.Find,
     )
     // biến nhớ vị trí của màn hình nào

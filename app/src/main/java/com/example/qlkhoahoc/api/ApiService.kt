@@ -26,10 +26,14 @@ interface ApiService {
     @POST("auth/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
 
+    @POST("auth/logout")
+    fun logout(@Header("Authorization") token: String): Call<LogoutResponse>
+
     @GET("categories")
     fun getAllCategories(): Call<List<Category>>
 
     @GET("courses/search")
     fun findCourse(@Query("searchTerm") searchTerm: String): Call<MutableList<Course>>
+
 
 }

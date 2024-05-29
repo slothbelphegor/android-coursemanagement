@@ -1,7 +1,6 @@
 package com.example.qlkhoahoc.screens
 
 import android.util.Log
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,7 @@ import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
 
 
 import androidx.compose.ui.graphics.Color
@@ -68,8 +68,8 @@ fun AuthorRow(value: String) {
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val context = LocalContext.current
-    val token = TokenManager.getToken(context).toString()
-    val tokenData = decodeJWT(token)
+    var token by remember { mutableStateOf(TokenManager.getToken(context)) }
+    val tokenData = token?.let { decodeJWT(it) }
 
     tokenData?.let {
         Log.d("Token Data", "userId: ${it.userId}, username: ${it.username}, roleId: ${it.roleId}")
@@ -91,12 +91,29 @@ fun HomeScreen(navController: NavHostController) {
             DetailSection(tokenData)
             ImageSection()
             AuthorSection()
-            Button( onClick = { navController.navigate("login") },
-                modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(
-                    text = "Đăng nhập/Đăng ký",
-                    style = TextStyle(fontSize = 14.sp)
-                )
+            if (token != null) {
+                Button(
+                    onClick = {
+                        TokenManager.clearToken(context)
+                        navController.navigate("login")
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text(
+                        text = "Đăng xuất",
+                        style = TextStyle(fontSize = 14.sp)
+                    )
+                }
+            } else {
+                Button(
+                    onClick = { navController.navigate("login") },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text(
+                        text = "Đăng nhập/Đăng ký",
+                        style = TextStyle(fontSize = 14.sp)
+                    )
+                }
             }
         }
     }
@@ -232,9 +249,9 @@ fun ImageSection() {
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun HomePreview() {
-
-    HomeScreen(rememberNavController())
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun HomePreview() {
+//
+//    HomeScreen(rememberNavController())
+//}
