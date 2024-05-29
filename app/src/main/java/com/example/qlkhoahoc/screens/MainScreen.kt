@@ -38,6 +38,7 @@ fun BottomBar(navController: NavHostController) {
     val tokenData = decodeJWT(token)
     val roleId = remember { mutableStateOf(0) }
 
+    // nếu token thay đổi thì gán lại roleId
     LaunchedEffect(token) {
         if (tokenData != null) {
             roleId.value = tokenData.roleId

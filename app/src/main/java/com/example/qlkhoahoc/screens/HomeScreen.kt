@@ -70,6 +70,7 @@ fun HomeScreen(navController: NavHostController) {
     val context = LocalContext.current
     val token = TokenManager.getToken(context).toString()
     val tokenData = decodeJWT(token)
+
     tokenData?.let {
         Log.d("Token Data", "userId: ${it.userId}, username: ${it.username}, roleId: ${it.roleId}")
         Text(text = "UserId: ${it.userId}")

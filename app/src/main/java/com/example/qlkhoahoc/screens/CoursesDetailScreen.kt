@@ -4,6 +4,7 @@ package com.example.qlkhoahoc.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,9 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,14 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.example.qlkhoahoc.R
+import com.example.qlkhoahoc.methods.auth.TokenManager
 import com.example.qlkhoahoc.model.Course
-import com.example.qlkhoahoc.screens.course.EditCourseScreen
+import com.example.qlkhoahoc.model.decodeJWT
 import com.example.qlkhoahoc.ui.theme.courseColor1
 
 
@@ -55,7 +54,19 @@ fun CourseDetailScreen(
     var showWatchDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
     val URL_IMAGE = getApiUrl(context)
+
+    val token = TokenManager.getToken(context).toString()
+    val tokenData = decodeJWT(token)
+    val roleId = remember { mutableStateOf(0) }
+    // nếu token thay đổi thì gán lại roleId
+    LaunchedEffect(token) {
+        if (tokenData != null) {
+            roleId.value = tokenData.roleId
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +80,13 @@ fun CourseDetailScreen(
                 backgroundColor = (backgroundColor),
                 actions = {
                     IconButton(onClick = {
-                        navController.navigate("editCourse/${course.courseId}")
+                        if (roleId.value == 1) {
+                            navController.navigate("editCourse/${course.courseId}")
+                        }
+                        else {
+                            Toast.makeText(context,"Function unavailable",Toast.LENGTH_SHORT).show()
+                        }
+
                     }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -156,7 +173,7 @@ fun CourseDetailScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                course.video?.let { watchVideoButton(context = context, it) }
+                course.video?.let { watchVideoButton(context = context, it, roleId.value) }
             }
         }
 
@@ -228,13 +245,18 @@ fun CourseDetailScreen(
 }
 
 @Composable
-fun watchVideoButton(context: Context, videoLink: String) {
+fun watchVideoButton(context: Context, videoLink: String, roleId: Int) {
     GradientButton(
         text = "Xem khóa học",
         onClick = {
-            val url = videoLink
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            context.startActivity(intent)
+            if (roleId != 0) {
+                val url = videoLink
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+            else {
+                Toast.makeText(context,"Please login to enjoy this course",Toast.LENGTH_SHORT).show()
+            }
         },
         gradient = Brush.horizontalGradient(
             colors = listOf(Color(0xFF6200EA), Color(0xFF3700B3))
