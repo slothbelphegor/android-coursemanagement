@@ -1,7 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.qlkhoahoc.screens
-//package com.whitebatcodes.myloginapplication.interfaces
+
 
 import android.util.Log
 import android.widget.Toast
@@ -50,22 +48,17 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun RegisterScreen(navController: NavHostController) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var tk: String
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var loggedIn by remember { mutableStateOf(false) }
+    var repassword by remember { mutableStateOf("") }
 
-    fun performLogin(username: String, password: String) {
-        val loginData = LoginData(username, password)
-        login(context, loginData) { success, token ->
-            loggedIn = success
-            tk = token
-        }
-    }
+    var registered by remember { mutableStateOf(true) }
+
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -91,6 +84,17 @@ fun LoginScreen(navController: NavHostController) {
                 .fillMaxWidth()
                 .padding(horizontal = 25.dp)
         )
+        Spacer(modifier = Modifier.height(30.dp))
+        PasswordField(
+            value = repassword,
+            onChange = { repassword = it },
+            submit = {
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp),
+            placeholder = "Nhập lại mật khẩu"
+        )
         Spacer(modifier = Modifier.height(20.dp))
 //        Row(modifier = Modifier
 //            .align(Alignment.Start)
@@ -105,17 +109,16 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                Log.d("LoggedIn before perform",loggedIn.toString())
-                performLogin(username, password)
+                // hàm đăng ký ở đây
                 coroutineScope.launch {
                     delay(1000L) // Đợi 1 giây
-                    Log.d("LoggedIn after perform", loggedIn.toString())
-                    if (loggedIn) {
-                        navController.navigate("home")
-                        Toast.makeText(context,"Đăng nhập thành công",Toast.LENGTH_SHORT).show()
+
+                    if (registered) {
+                        navController.navigate("login")
+                        Toast.makeText(context,"Đăng ký tài khoản thành công",Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        Toast.makeText(context,"Đăng nhập thất bại",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,"Đăng ký tài khoản thất bại",Toast.LENGTH_SHORT).show()
                     }
                 }
             },
@@ -125,59 +128,19 @@ fun LoginScreen(navController: NavHostController) {
                 .fillMaxWidth()
                 .padding(horizontal = 25.dp)
         ) {
-            Text("Đăng nhập")
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(
-            onClick = {
-                navController.navigate("register")
-                Toast.makeText(context,"Not yet",Toast.LENGTH_SHORT).show()
-            },
-            enabled = true,
-            shape = RoundedCornerShape(15.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 25.dp)
-        ) {
             Text("Đăng ký")
         }
+
     }
 }
 
 
-data class Credentials(
-    var login: String = "",
-    var pwd: String = "",
-    var remember: Boolean = false
-) {
-    fun isNotEmpty(): Boolean {
-        return login.isNotEmpty() && pwd.isNotEmpty()
-    }
-}
+
+
 
 
 @Composable
-fun LabeledCheckbox(
-    label: String,
-    onCheckChanged: () -> Unit,
-    isChecked: Boolean
-) {
-    Row(
-        Modifier
-            .clickable(
-                onClick = onCheckChanged
-            )
-            .padding(4.dp)
-    ) {
-        Checkbox(checked = isChecked, onCheckedChange = null)
-        Spacer(Modifier.size(6.dp))
-        Text(label)
-    }
-}
-
-
-@Composable
-fun LoginField(
+fun RegisterUsernameField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -206,7 +169,7 @@ fun LoginField(
 }
 
 @Composable
-fun PasswordField(
+fun RegisterPasswordField(
     value: String,
     onChange: (String) -> Unit,
     submit: () -> Unit,
@@ -257,9 +220,8 @@ fun PasswordField(
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun LoginPreview() {
+fun RegisterScreenPreview() {
 
-    LoginScreen(rememberNavController())
+    RegisterScreen(rememberNavController())
 }
-
 

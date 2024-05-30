@@ -167,14 +167,36 @@ fun CourseDetailScreen(
                 thickness = 1.dp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-                course.video?.let { watchVideoButton(context = context, it, roleId.value) }
+            // nếu là khách hàng đã đăng ký (thay cho true) hoặc là admin và moderator
+            if ((roleId.value == 3 && true) || roleId.value == 1 || roleId.value == 2) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    course.video?.let { watchVideoButton(context = context, it, roleId.value) }
+                }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            GradientButton(
+                modifier = Modifier.padding(16.dp),
+                text = "Đăng ký khóa học",
+                onClick = {
+                    if (roleId.value != 0) { // nếu đã đăng nhập
+                        Toast.makeText(context,"Đăng kí khóa học thành công!",Toast.LENGTH_SHORT).show()
+                        // thêm vào danh sách khóa học đã đăng ký
+                    }
+                    // nên có thêm trường hợp "hủy đăng ký nếu đã đăng ký"
+                    else { // chưa đăng nhập
+                        Toast.makeText(context,"Bạn chưa đăng nhập!",Toast.LENGTH_SHORT).show()
+                    }
+                },
+                gradient = Brush.horizontalGradient(
+                    colors = listOf(Color(0xFF6200EA), Color(0xFF3700B3))
+                ),
+            )
         }
 
 //        if (showWatchDialog) {

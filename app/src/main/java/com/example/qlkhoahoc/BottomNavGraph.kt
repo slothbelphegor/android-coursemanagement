@@ -38,6 +38,7 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable("login") { LoginScreen(navController) }
         composable("home") { HomeScreen(navController) }
+        composable("register") { RegisterScreen(navController) }
 
         composable("editCourse/{courseId}") { backStackEntry ->
             EditCourseScreen(
