@@ -41,7 +41,9 @@ import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.qlkhoahoc.methods.auth.login
+import com.example.qlkhoahoc.methods.auth.register
 import com.example.qlkhoahoc.model.LoginData
+import com.example.qlkhoahoc.model.RegisterData
 import com.example.qlkhoahoc.ui.theme.backgroundColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,7 +59,7 @@ fun RegisterScreen(navController: NavHostController) {
     var password by remember { mutableStateOf("") }
     var repassword by remember { mutableStateOf("") }
 
-    var registered by remember { mutableStateOf(true) }
+    var registered by remember { mutableStateOf(false) }
 
 
     Column(
@@ -109,16 +111,22 @@ fun RegisterScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
+                val registerData = RegisterData(username, password, repassword)
                 // hàm đăng ký ở đây
+                register(registerData) { success ->
+                    registered = success
+                }
+
                 coroutineScope.launch {
                     delay(1000L) // Đợi 1 giây
 
                     if (registered) {
                         navController.navigate("login")
-                        Toast.makeText(context,"Đăng ký tài khoản thành công",Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        Toast.makeText(context,"Đăng ký tài khoản thất bại",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Đăng ký tài khoản thành công", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(context, "Đăng ký tài khoản thất bại", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             },
@@ -133,10 +141,6 @@ fun RegisterScreen(navController: NavHostController) {
 
     }
 }
-
-
-
-
 
 
 @Composable
@@ -218,10 +222,10 @@ fun RegisterPasswordField(
     )
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-
-    RegisterScreen(rememberNavController())
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun RegisterScreenPreview() {
+//
+//    RegisterScreen(rememberNavController())
+//}
 

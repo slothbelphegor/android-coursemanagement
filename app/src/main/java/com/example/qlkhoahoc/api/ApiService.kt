@@ -29,6 +29,9 @@ interface ApiService {
     @POST("auth/logout")
     fun logout(@Header("Authorization") token: String): Call<LogoutResponse>
 
+    @POST("auth/register")
+    fun register(@Body registerData: RegisterData): Call<ApiResponse>
+
     @GET("categories")
     fun getAllCategories(): Call<List<Category>>
 
