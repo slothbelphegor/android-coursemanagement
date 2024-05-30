@@ -170,8 +170,15 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                     )
 
                     // Call editCourse
-                    editCourse(tk, context, courseId!!, updatedCourse) { updatedCourse ->
-
+                    editCourse(tk, courseId!!, updatedCourse) { success ->
+                        if (success == true) {
+                            Log.d("EditCourseScreen", "Course updated successfully")
+                            Toast.makeText(context, "Course updated successfully", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                        } else {
+                            Log.e("EditCourseScreen", "Failed to update course")
+                            Toast.makeText(context, "Failed to update course", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     Log.d("EditCourseScreen", "Successfully updated course: $updatedCourse")
                     Toast.makeText(context,"Course updated successfully",Toast.LENGTH_SHORT).show()

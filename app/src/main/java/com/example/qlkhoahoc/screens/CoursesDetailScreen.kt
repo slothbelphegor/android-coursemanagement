@@ -80,7 +80,7 @@ fun CourseDetailScreen(
                 backgroundColor = (backgroundColor),
                 actions = {
                     IconButton(onClick = {
-                        if (roleId.value == 1) {
+                        if (roleId.value == 2) {
                             navController.navigate("editCourse/${course.courseId}")
                         }
                         else {
