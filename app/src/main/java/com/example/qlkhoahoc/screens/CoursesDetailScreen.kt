@@ -52,10 +52,7 @@ fun getApiUrl(context: Context): String {
 
 @Composable
 fun CourseDetailScreen(
-    course: Course,
-    backgroundColor: Color,
-    categoryName: String,
-    navController: NavHostController
+    course: Course, backgroundColor: Color, categoryName: String, navController: NavHostController
 ) {
     var showWatchDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
@@ -87,20 +84,12 @@ fun CourseDetailScreen(
             .background(backgroundColor)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar(
-                title = {
-                    Text(text = "Chi tiết khóa học", color = Color.Black)
-                },
-                backgroundColor = (backgroundColor),
-                actions = {
+            TopAppBar(title = {
+                Text(text = "Chi tiết khóa học", color = Color.Black)
+            }, backgroundColor = (backgroundColor), actions = {
+                if (roleId.value == 2) {
                     IconButton(onClick = {
-                        if (roleId.value == 2) {
-                            navController.navigate("editCourse/${course.courseId}")
-                        } else {
-                            Toast.makeText(context, "Chức năng không khả dụng", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
+                        navController.navigate("editCourse/${course.courseId}")
                     }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
@@ -109,24 +98,23 @@ fun CourseDetailScreen(
                         )
                     }
                 }
-            )
+
+            })
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
             ) {
                 course.image?.let {
-                    val p = rememberImagePainter(
-                        data = URL_IMAGE + it,
-                        builder = {
-                            placeholder(R.drawable.ic_launcher_background)
-                            error(R.drawable.noimage)
-                            crossfade(1000) // thời gian hiển thị từ placeholder sang hình
-                            transformations( // gọt tròn các góc hình
-                                RoundedCornersTransformation(50f)
-                            )
-                            size(2000, 1000)
-                        })
+                    val p = rememberImagePainter(data = URL_IMAGE + it, builder = {
+                        placeholder(R.drawable.ic_launcher_background)
+                        error(R.drawable.noimage)
+                        crossfade(1000) // thời gian hiển thị từ placeholder sang hình
+                        transformations( // gọt tròn các góc hình
+                            RoundedCornersTransformation(50f)
+                        )
+                        size(2000, 1000)
+                    })
                     Image(
                         modifier = Modifier
                             .padding(6.dp)
@@ -170,9 +158,7 @@ fun CourseDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
             course.description?.let {
                 Text(
-                    text = it,
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    text = it, fontSize = 16.sp, modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -224,9 +210,7 @@ fun CourseDetailScreen(
                             createOrder(tk, createObject) { success ->
                                 if (success) {
                                     Toast.makeText(
-                                        context,
-                                        "Đăng ký khóa học thành công!",
-                                        Toast.LENGTH_SHORT
+                                        context, "Đăng ký khóa học thành công!", Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
                                     Toast.makeText(
@@ -285,10 +269,8 @@ fun CourseDetailScreen(
 
         if (showEditDialog) {
             Dialog(
-                onDismissRequest = { showEditDialog = false },
-                properties = DialogProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true
+                onDismissRequest = { showEditDialog = false }, properties = DialogProperties(
+                    dismissOnBackPress = true, dismissOnClickOutside = true
                 )
             ) {
                 Box(
@@ -299,9 +281,7 @@ fun CourseDetailScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Edit Course",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
+                            text = "Edit Course", fontSize = 20.sp, fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
@@ -348,17 +328,13 @@ fun watchVideoButton(context: Context, videoLink: String, roleId: Int) {
 
 @Composable
 fun GradientButton(
-    text: String,
-    onClick: () -> Unit,
-    gradient: Brush,
-    modifier: Modifier = Modifier
+    text: String, onClick: () -> Unit, gradient: Brush, modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .background(
-                gradient,
-                shape = RoundedCornerShape(24.dp)
+                gradient, shape = RoundedCornerShape(24.dp)
             ) // Updated to 24.dp for rounder corners
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
@@ -368,8 +344,7 @@ fun GradientButton(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    gradient,
-                    shape = RoundedCornerShape(24.dp)
+                    gradient, shape = RoundedCornerShape(24.dp)
                 ) // Updated to 24.dp for rounder corners
                 .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -385,9 +360,7 @@ fun GradientButton(
 fun PreviewCourseDetailScreen() {
     CourseDetailScreen(
         Course(
-            "0", "Python cơ bản",
-            "Lập trình Python căn bản", "homeicon.png", "video",
-            0, 0
+            "0", "Python cơ bản", "Lập trình Python căn bản", "homeicon.png", "video", 0, 0
         ), courseColor1, "Lập trình", rememberNavController()
     )
 }
