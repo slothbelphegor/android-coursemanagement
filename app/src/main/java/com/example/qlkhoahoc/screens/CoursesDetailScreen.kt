@@ -193,6 +193,7 @@ fun CourseDetailScreen(
                                         "Huỷ đăng ký khóa học thành công!",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    navController.popBackStack()
                                 } else {
                                     Toast.makeText(
                                         context,
@@ -203,8 +204,6 @@ fun CourseDetailScreen(
 
                             }
                         }
-                        Toast.makeText(context, "Bạn đã hủy đăng ký khóa học", Toast.LENGTH_SHORT)
-                            .show()
                     } else {
                         if (roleId.value == 3) {
                             createOrder(tk, createObject) { success ->
@@ -212,6 +211,7 @@ fun CourseDetailScreen(
                                     Toast.makeText(
                                         context, "Đăng ký khóa học thành công!", Toast.LENGTH_SHORT
                                     ).show()
+                                    navController.popBackStack()
                                 } else {
                                     Toast.makeText(
                                         context,
@@ -221,13 +221,10 @@ fun CourseDetailScreen(
                                 }
                             }
                         }
-                        // nên có thêm trường hợp "hủy đăng ký nếu đã đăng ký"
                         else if (roleId.value == 0) { // chưa đăng nhập
                             Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT)
                                 .show()
                         }
-                        Toast.makeText(context, "Bạn đã đăng ký khóa học", Toast.LENGTH_SHORT)
-                            .show()
                     }
                 },
                 gradient = Brush.horizontalGradient(
