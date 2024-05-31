@@ -25,8 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.qlkhoahoc.methods.getAllCategories
-import com.example.qlkhoahoc.methods.getAllCourses
+import com.example.qlkhoahoc.methods.category.getAllCategories
+import com.example.qlkhoahoc.methods.course.getAllCourses
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.screens.CourseDetailScreen
 import com.example.qlkhoahoc.ui.theme.*

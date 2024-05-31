@@ -9,24 +9,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.qlkhoahoc.BottomBarScreen
+import com.example.qlkhoahoc.methods.auth.TokenManager
 
-import com.example.qlkhoahoc.methods.getAllCourses
+import com.example.qlkhoahoc.methods.course.getAllCourses
+import com.example.qlkhoahoc.methods.order.getOrderOfUser
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.*
 
 @Composable
 fun AttendedCoursesScreen(navController: NavHostController) {
+    val context = LocalContext.current
+    val tk: String = "Bearer " + TokenManager.getToken(context).toString()
     var list by remember {
         mutableStateOf(mutableListOf<Course>())
     }
 
     // Goi ham API va nhan ket qua tra ve thong qua callback
-    getAllCourses {
+    getOrderOfUser(tk) {
         list = it
     }
     //ve UI

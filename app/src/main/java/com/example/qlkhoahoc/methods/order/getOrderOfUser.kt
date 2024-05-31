@@ -1,28 +1,28 @@
-package com.example.qlkhoahoc.methods.course
+package com.example.qlkhoahoc.methods.order
 
 import android.util.Log
 import com.example.qlkhoahoc.api.ApiClient
+import com.example.qlkhoahoc.model.ApiResponse
 import com.example.qlkhoahoc.model.Course
+import com.example.qlkhoahoc.model.CourseAdd
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-// phuong thuc async: return ket qua tra ve bang callBack
-fun getAllCourses(callback: (MutableList<Course>) -> Unit) {
+fun getOrderOfUser(token: String, callback: (MutableList<Course>) -> Unit) {
     var list = mutableListOf<Course>()
-    val call = ApiClient.apiService.getAllCourses()
-
-    call.enqueue(object : Callback<List<Course>> {
-        override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>) {
-            Log.d("Check", "Check before if")
+    val call = ApiClient.apiService.getOrderOfUser(token)
+    call.enqueue(object : Callback<MutableList<Course>> {
+        override fun onResponse(
+            call: Call<MutableList<Course>>,
+            response: Response<MutableList<Course>>
+        ) {
             if (response.isSuccessful) {
-                Log.d("Check", "Check in if")
                 response.body()?.let {
-                    list = it as MutableList<Course>
+                    list = it
                 }
                 callback.invoke(list)
             } else {
-                Log.d("Check", "Check in else")
                 Log.e("Error", "Request failed with status code: ${response.code()}")
                 response.errorBody()?.let {
                     Log.e("Error", "Error body: ${it.string()}")
@@ -30,7 +30,7 @@ fun getAllCourses(callback: (MutableList<Course>) -> Unit) {
             }
         }
 
-        override fun onFailure(call: Call<List<Course>>, t: Throwable) {
+        override fun onFailure(call: Call<MutableList<Course>>, t: Throwable) {
             Log.e("error", "Error fetch Courses", t)
         }
 

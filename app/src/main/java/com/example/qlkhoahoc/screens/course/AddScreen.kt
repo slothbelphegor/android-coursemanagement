@@ -18,7 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.qlkhoahoc.methods.getAllCategories
+import com.example.qlkhoahoc.methods.category.getAllCategories
 import com.example.qlkhoahoc.model.Category
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.ui.theme.backgroundColor

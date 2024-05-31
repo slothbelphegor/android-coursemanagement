@@ -38,5 +38,15 @@ interface ApiService {
     @GET("courses/search")
     fun findCourse(@Query("searchTerm") searchTerm: String): Call<MutableList<Course>>
 
+    @POST("orders")
+    fun createOrder(@Header("Authorization") token: String, @Body createOrder: CreateOrder): Call<ApiResponse>
 
+    @GET("orders/attended")
+    fun getOrderOfUser(@Header("Authorization") token: String): Call<MutableList<Course>>
+
+    @POST("orders/check")
+    fun checkIfUserAttended(@Header("Authorization") token: String, @Body createOrder: CreateOrder): Call<CheckResponse>
+
+    @DELETE("orders/delete/{id}")
+    fun deleteOrder(@Header("Authorization") token: String, @Path("id") id: String): Call<ApiResponse>
 }

@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 import com.example.qlkhoahoc.methods.auth.TokenManager
 import com.example.qlkhoahoc.methods.course.editCourse
 import com.example.qlkhoahoc.methods.course.getCourseById
-import com.example.qlkhoahoc.methods.getAllCategories
+import com.example.qlkhoahoc.methods.category.getAllCategories
 import com.example.qlkhoahoc.model.Category
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.model.CourseAdd

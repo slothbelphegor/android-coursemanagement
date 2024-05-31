@@ -4,6 +4,7 @@ package com.example.qlkhoahoc.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,9 +33,14 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.example.qlkhoahoc.R
 import com.example.qlkhoahoc.methods.auth.TokenManager
+import com.example.qlkhoahoc.methods.order.checkIfUserAttended
+import com.example.qlkhoahoc.methods.order.createOrder
+import com.example.qlkhoahoc.methods.order.deleteOrder
 import com.example.qlkhoahoc.model.Course
+import com.example.qlkhoahoc.model.CreateOrder
 import com.example.qlkhoahoc.model.decodeJWT
 import com.example.qlkhoahoc.ui.theme.courseColor1
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -58,12 +64,20 @@ fun CourseDetailScreen(
     val URL_IMAGE = getApiUrl(context)
 
     val token = TokenManager.getToken(context).toString()
+    val tk: String = "Bearer $token"
     val tokenData = decodeJWT(token)
     val roleId = remember { mutableStateOf(0) }
+    val hasAttended = remember { mutableStateOf(false) }
     // nếu token thay đổi thì gán lại roleId
     LaunchedEffect(token) {
         if (tokenData != null) {
             roleId.value = tokenData.roleId
+            val createObject = CreateOrder(course_id = course.courseId)
+            checkIfUserAttended(tk, createObject) { attended ->
+                hasAttended.value = attended
+            }
+            delay(1000L)
+            Log.d("Has attended", hasAttended.value.toString())
         }
     }
 
@@ -82,9 +96,9 @@ fun CourseDetailScreen(
                     IconButton(onClick = {
                         if (roleId.value == 2) {
                             navController.navigate("editCourse/${course.courseId}")
-                        }
-                        else {
-                            Toast.makeText(context,"Chức năng không khả dụng",Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Chức năng không khả dụng", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                     }) {
@@ -167,8 +181,8 @@ fun CourseDetailScreen(
                 thickness = 1.dp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
-            // nếu là khách hàng đã đăng ký (thay cho true) hoặc là admin và moderator
-            if ((roleId.value == 3 && true) || roleId.value == 1 || roleId.value == 2) {
+            // nếu là khách hàng đã đăng ký hoặc là admin và moderator
+            if ((roleId.value == 3 && hasAttended.value) || roleId.value == 1 || roleId.value == 2) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier
@@ -181,15 +195,55 @@ fun CourseDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
             GradientButton(
                 modifier = Modifier.padding(16.dp),
-                text = "Đăng ký khóa học",
+                text = if (hasAttended.value) "Hủy đăng ký" else "Đăng ký khóa học",
                 onClick = {
-                    if (roleId.value == 3) { // nếu đã đăng nhập
-                        Toast.makeText(context,"Đăng kí khóa học thành công!",Toast.LENGTH_SHORT).show()
-                        // thêm vào danh sách khóa học đã đăng ký
-                    }
-                    // nên có thêm trường hợp "hủy đăng ký nếu đã đăng ký"
-                    else if (roleId.value == 0){ // chưa đăng nhập
-                        Toast.makeText(context,"Bạn chưa đăng nhập!",Toast.LENGTH_SHORT).show()
+                    val createObject = CreateOrder(course_id = course.courseId)
+                    if (hasAttended.value) {
+                        course.courseId?.let {
+                            deleteOrder(tk, it) { success ->
+                                if (success) {
+                                    Toast.makeText(
+                                        context,
+                                        "Huỷ đăng ký khóa học thành công!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Huỷ đăng ký khóa học không thành công!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            }
+                        }
+                        Toast.makeText(context, "Bạn đã hủy đăng ký khóa học", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        if (roleId.value == 3) {
+                            createOrder(tk, createObject) { success ->
+                                if (success) {
+                                    Toast.makeText(
+                                        context,
+                                        "Đăng ký khóa học thành công!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Đăng ký khóa học không thành công!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                        // nên có thêm trường hợp "hủy đăng ký nếu đã đăng ký"
+                        else if (roleId.value == 0) { // chưa đăng nhập
+                            Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        Toast.makeText(context, "Bạn đã đăng ký khóa học", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 },
                 gradient = Brush.horizontalGradient(
@@ -271,18 +325,19 @@ fun watchVideoButton(context: Context, videoLink: String, roleId: Int) {
         text = "Xem khóa học",
         onClick = {
             if ((roleId == 3) || roleId == 1 || roleId == 2) { // nếu đã có tài khoản và đã đăng ký
-                val url = videoLink
                 try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoLink))
                     context.startActivity(intent)
-                }
-                catch(ex: Exception) {
-                    Toast.makeText(context,"Có lỗi xảy ra. Xin hãy thử lại sau hoặc liên hệ hỗ trợ.",Toast.LENGTH_SHORT).show()
+                } catch (ex: Exception) {
+                    Toast.makeText(
+                        context,
+                        "Có lỗi xảy ra. Xin hãy thử lại sau hoặc liên hệ hỗ trợ.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
-            }
-            else {
-                Toast.makeText(context,"Bạn chưa đăng kí khóa học này",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Bạn chưa đăng kí khóa học này", Toast.LENGTH_SHORT).show()
             }
         },
         gradient = Brush.horizontalGradient(

@@ -1,4 +1,4 @@
-package com.example.qlkhoahoc.methods
+package com.example.qlkhoahoc.methods.category
 
 import android.util.Log
 import com.example.qlkhoahoc.api.ApiClient
