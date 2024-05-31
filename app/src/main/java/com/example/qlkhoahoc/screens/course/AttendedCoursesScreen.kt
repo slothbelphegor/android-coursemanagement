@@ -13,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.qlkhoahoc.BottomBarScreen
 
 import com.example.qlkhoahoc.methods.getAllCourses
 import com.example.qlkhoahoc.model.Course

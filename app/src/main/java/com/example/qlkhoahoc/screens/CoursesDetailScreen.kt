@@ -79,21 +79,18 @@ fun CourseDetailScreen(
                 },
                 backgroundColor = (backgroundColor),
                 actions = {
-                    IconButton(onClick = {
-                        if (roleId.value == 2) {
+                    if (roleId.value == 2) {
+                        IconButton(onClick = {
                             navController.navigate("editCourse/${course.courseId}")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Edit",
+                                tint = Color.Black
+                            )
                         }
-                        else {
-                            Toast.makeText(context,"Chức năng không khả dụng",Toast.LENGTH_SHORT).show()
-                        }
-
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit",
-                            tint = Color.Black
-                        )
                     }
+
                 }
             )
             Row(

@@ -13,6 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -185,9 +186,9 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
 
                     course.description?.let {
                         Row {
-                            IconButton(onClick = {  }) {
-
-                            }
+                            Icon(
+                                imageVector = Icons.Default.Info, contentDescription = ""
+                            )
                             Text(
                                 modifier = Modifier.padding(start = 6.dp),
                                 text = it,
