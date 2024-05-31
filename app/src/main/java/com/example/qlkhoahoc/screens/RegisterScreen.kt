@@ -77,7 +77,7 @@ fun RegisterScreen(navController: NavHostController) {
                 .padding(horizontal = 25.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
-        PasswordField(
+        FirstPasswordField(
             value = password,
             onChange = { password = it },
             submit = {
@@ -95,7 +95,8 @@ fun RegisterScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 25.dp),
-            placeholder = "Nhập lại mật khẩu"
+            placeholder = "Nhập lại mật khẩu",
+            label = "Nhập lại mật khẩu"
         )
         Spacer(modifier = Modifier.height(20.dp))
 //        Row(modifier = Modifier
@@ -143,42 +144,15 @@ fun RegisterScreen(navController: NavHostController) {
 }
 
 
-@Composable
-fun RegisterUsernameField(
-    value: String,
-    onChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    label: String = "Tên tài khoản",
-    placeholder: String = "Nhập tên tài khoản"
-) {
 
-    val leadingIcon = @Composable {
-        Icon(
-            Icons.Default.Person,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.primary
-        )
-    }
-
-    TextField(
-        value = value,
-        onValueChange = onChange,
-        modifier = modifier,
-        leadingIcon = leadingIcon,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-        placeholder = { Text(placeholder) },
-        label = { Text(label) },
-        singleLine = true,
-    )
-}
 
 @Composable
-fun RegisterPasswordField(
+fun FirstPasswordField(
     value: String,
     onChange: (String) -> Unit,
     submit: () -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Mật khẩu",
+    label: String = "Nhập mật khẩu",
     placeholder: String = "Nhập mật khẩu"
 ) {
 
@@ -209,7 +183,7 @@ fun RegisterPasswordField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
+            imeAction = ImeAction.Next,
             keyboardType = KeyboardType.Password
         ),
         keyboardActions = KeyboardActions(

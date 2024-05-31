@@ -131,7 +131,6 @@ fun LoginScreen(navController: NavHostController) {
         Button(
             onClick = {
                 navController.navigate("register")
-                Toast.makeText(context,"Not yet",Toast.LENGTH_SHORT).show()
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),

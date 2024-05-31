@@ -84,7 +84,7 @@ fun CourseDetailScreen(
                             navController.navigate("editCourse/${course.courseId}")
                         }
                         else {
-                            Toast.makeText(context,"Function unavailable",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"Chức năng không khả dụng",Toast.LENGTH_SHORT).show()
                         }
 
                     }) {
@@ -178,18 +178,17 @@ fun CourseDetailScreen(
                     course.video?.let { watchVideoButton(context = context, it, roleId.value) }
                 }
             }
-
             Spacer(modifier = Modifier.height(8.dp))
             GradientButton(
                 modifier = Modifier.padding(16.dp),
                 text = "Đăng ký khóa học",
                 onClick = {
-                    if (roleId.value != 0) { // nếu đã đăng nhập
+                    if (roleId.value == 3) { // nếu đã đăng nhập
                         Toast.makeText(context,"Đăng kí khóa học thành công!",Toast.LENGTH_SHORT).show()
                         // thêm vào danh sách khóa học đã đăng ký
                     }
                     // nên có thêm trường hợp "hủy đăng ký nếu đã đăng ký"
-                    else { // chưa đăng nhập
+                    else if (roleId.value == 0){ // chưa đăng nhập
                         Toast.makeText(context,"Bạn chưa đăng nhập!",Toast.LENGTH_SHORT).show()
                     }
                 },
@@ -271,13 +270,19 @@ fun watchVideoButton(context: Context, videoLink: String, roleId: Int) {
     GradientButton(
         text = "Xem khóa học",
         onClick = {
-            if (roleId != 0) {
+            if ((roleId == 3) || roleId == 1 || roleId == 2) { // nếu đã có tài khoản và đã đăng ký
                 val url = videoLink
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                context.startActivity(intent)
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    context.startActivity(intent)
+                }
+                catch(ex: Exception) {
+                    Toast.makeText(context,"Có lỗi xảy ra. Xin hãy thử lại sau hoặc liên hệ hỗ trợ.",Toast.LENGTH_SHORT).show()
+                }
+
             }
             else {
-                Toast.makeText(context,"Please login to enjoy this course",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Bạn chưa đăng kí khóa học này",Toast.LENGTH_SHORT).show()
             }
         },
         gradient = Brush.horizontalGradient(
