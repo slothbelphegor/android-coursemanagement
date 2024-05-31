@@ -21,3 +21,9 @@ Open this project on Android Studio, change the IP in following places into the 
 - app/java/com.example.qlkhoahoc/api/ApiClient: the **BASE_URL** value
   
 Now you can run the app by pressing **Run** or **Shift + F10** on Android Studio.
+
+### Accounts
+You can create a new account using the Register feature in the app.
+To use Admin account, use following info:
+- username: moderator
+- password: P@ssWord123
