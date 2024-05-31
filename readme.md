@@ -34,5 +34,3 @@ Open this project on Android Studio, change the IP in following places into the 
 - app/java/com.example.qlkhoahoc/api/ApiClient: the BASE_URL value
   
 Now you can run the app by pressing Run on Android Studio.
-
-
