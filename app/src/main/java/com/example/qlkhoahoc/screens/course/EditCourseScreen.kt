@@ -87,7 +87,7 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Edit Course", color = Color.Black)
+            Text(text = "Sửa thông tin khóa học", color = Color.Black)
             Spacer(modifier = Modifier.height(20.dp))
             course?.let {
                 TextField(
@@ -97,7 +97,7 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                         .fillMaxWidth()
                         .padding(8.dp)
                         .background(Color.White),
-                    label = { Text("Course Name") }
+                    label = { Text("Tên khóa học (*)") }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextField(
@@ -107,7 +107,7 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                         .fillMaxWidth()
                         .padding(8.dp)
                         .background(Color.White),
-                    label = { Text("Course Description") }
+                    label = { Text("Mô tả khóa học (*)") }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextField(
@@ -117,7 +117,7 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                         .fillMaxWidth()
                         .padding(8.dp)
                         .background(Color.White),
-                    label = { Text("Course Image URL") }
+                    label = { Text("File ảnh") }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextField(
@@ -127,7 +127,7 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                         .fillMaxWidth()
                         .padding(8.dp)
                         .background(Color.White),
-                    label = { Text("Course Video URL") }
+                    label = { Text("Đường dẫn video khóa học") }
                 )
                 var expanded by remember { mutableStateOf(false) }
                 val options = list
@@ -160,29 +160,34 @@ fun EditCourseScreen(navController: NavHostController, courseId: String?) {
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {
-                    // Create the updated course object
-                    val updatedCourse = CourseAdd(
-                        course = courseName,
-                        description = courseDescription,
-                        image = courseImage,
-                        video = courseVideo,
-                        category_id = categoryId,
-                    )
-
-                    // Call editCourse
-                    editCourse(tk, courseId!!, updatedCourse) { success ->
-                        if (success == true) {
-                            Log.d("EditCourseScreen", "Course updated successfully")
-                            Toast.makeText(context, "Course updated successfully", Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        } else {
-                            Log.e("EditCourseScreen", "Failed to update course")
-                            Toast.makeText(context, "Failed to update course", Toast.LENGTH_SHORT).show()
-                        }
+                    if (courseName == "" || courseDescription == "") {
+                        Toast.makeText(context, "Hãy nhập đủ các trường bắt buộc",Toast.LENGTH_SHORT).show()
                     }
-                    Log.d("EditCourseScreen", "Successfully updated course: $updatedCourse")
-                    Toast.makeText(context,"Course updated successfully",Toast.LENGTH_SHORT).show()
-                    navController.popBackStack()
+                    else {
+                        // Create the updated course object
+                        val updatedCourse = CourseAdd(
+                            course = courseName,
+                            description = courseDescription,
+                            image = courseImage,
+                            video = courseVideo,
+                            category_id = categoryId,
+                        )
+
+                        // Call editCourse
+                        editCourse(tk, courseId!!, updatedCourse) { success ->
+                            if (success == true) {
+                                Log.d("EditCourseScreen", "Course updated successfully")
+                                Toast.makeText(context, "Course updated successfully", Toast.LENGTH_SHORT).show()
+                                navController.popBackStack()
+                            } else {
+                                Log.e("EditCourseScreen", "Failed to update course")
+                                Toast.makeText(context, "Failed to update course", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        Log.d("EditCourseScreen", "Successfully updated course: $updatedCourse")
+                        Toast.makeText(context,"Course updated successfully",Toast.LENGTH_SHORT).show()
+                        navController.popBackStack()
+                    }
                 }) {
                     Text(text = "Save")
                 }

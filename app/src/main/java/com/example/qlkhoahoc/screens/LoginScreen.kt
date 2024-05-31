@@ -17,15 +17,8 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +51,8 @@ fun LoginScreen(navController: NavHostController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loggedIn by remember { mutableStateOf(false) }
+    var isUsernameValid by remember { mutableStateOf(true) }
+    var isPasswordValid by remember { mutableStateOf(true) }
 
     fun performLogin(username: String, password: String) {
         val loginData = LoginData(username, password)
@@ -76,20 +71,26 @@ fun LoginScreen(navController: NavHostController) {
     ) {
         LoginField(
             value = username,
-            onChange = { username = it },
+            onChange = {
+                username = it
+                isUsernameValid = isValidUsername(username)},
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp)
+                .padding(horizontal = 25.dp),
+            isError = !isUsernameValid
         )
         Spacer(modifier = Modifier.height(30.dp))
         PasswordField(
             value = password,
-            onChange = { password = it },
+            onChange = {
+                password = it
+                isPasswordValid = isValidPassword(password)},
             submit = {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp)
+                .padding(horizontal = 25.dp),
+            isError = !isPasswordValid
         )
         Spacer(modifier = Modifier.height(20.dp))
 //        Row(modifier = Modifier
@@ -103,21 +104,32 @@ fun LoginScreen(navController: NavHostController) {
 //            )
 //        }
         Spacer(modifier = Modifier.height(20.dp))
+
         Button(
             onClick = {
                 Log.d("LoggedIn before perform",loggedIn.toString())
-                performLogin(username, password)
-                coroutineScope.launch {
-                    delay(1000L) // Đợi 1 giây
-                    Log.d("LoggedIn after perform", loggedIn.toString())
-                    if (loggedIn) {
-                        navController.navigate("home")
-                        Toast.makeText(context,"Đăng nhập thành công",Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        Toast.makeText(context,"Đăng nhập thất bại",Toast.LENGTH_SHORT).show()
+                if (username == "" || password == "") {
+                    Toast.makeText(context,"Bạn chưa nhập đủ thông tin!",Toast.LENGTH_SHORT).show()
+                }
+
+                else if (isUsernameValid && isPasswordValid){
+                    performLogin(username, password)
+                    coroutineScope.launch {
+                        delay(1000L) // Đợi 1 giây
+                        Log.d("LoggedIn after perform", loggedIn.toString())
+                        if (loggedIn) {
+                            navController.navigate("home")
+                            Toast.makeText(context,"Đăng nhập thành công",Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            Toast.makeText(context,"Đăng nhập thất bại",Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
+                else {
+                    Toast.makeText(context,"Dữ liệu nhập vào không hợp lệ",Toast.LENGTH_SHORT).show()
+                }
+
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
@@ -142,46 +154,17 @@ fun LoginScreen(navController: NavHostController) {
         }
     }
 }
-
-
-data class Credentials(
-    var login: String = "",
-    var pwd: String = "",
-    var remember: Boolean = false
-) {
-    fun isNotEmpty(): Boolean {
-        return login.isNotEmpty() && pwd.isNotEmpty()
-    }
+fun isValidUsername(username: String): Boolean {
+    return username.matches(Regex("[a-zA-Z0-9]+"))
 }
-
-
-@Composable
-fun LabeledCheckbox(
-    label: String,
-    onCheckChanged: () -> Unit,
-    isChecked: Boolean
-) {
-    Row(
-        Modifier
-            .clickable(
-                onClick = onCheckChanged
-            )
-            .padding(4.dp)
-    ) {
-        Checkbox(checked = isChecked, onCheckedChange = null)
-        Spacer(Modifier.size(6.dp))
-        Text(label)
-    }
-}
-
-
 @Composable
 fun LoginField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Tên tài khoản",
-    placeholder: String = "Nhập tên tài khoản"
+    placeholder: String = "Nhập tên tài khoản",
+    isError: Boolean = false
 ) {
 
     val leadingIcon = @Composable {
@@ -199,8 +182,12 @@ fun LoginField(
         leadingIcon = leadingIcon,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         placeholder = { Text(placeholder) },
-        label = { Text(label) },
+        label = {
+            Text(label)
+        },
         singleLine = true,
+        isError = isError
+
     )
 }
 
@@ -211,7 +198,8 @@ fun PasswordField(
     submit: () -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Mật khẩu",
-    placeholder: String = "Nhập mật khẩu"
+    placeholder: String = "Nhập mật khẩu",
+    isError: Boolean = false
 ) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -250,7 +238,8 @@ fun PasswordField(
         placeholder = { Text(placeholder) },
         label = { Text(label) },
         singleLine = true,
-        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = isError
     )
 }
 

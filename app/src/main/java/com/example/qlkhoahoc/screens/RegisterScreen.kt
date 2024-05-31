@@ -58,7 +58,9 @@ fun RegisterScreen(navController: NavHostController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repassword by remember { mutableStateOf("") }
-
+    var isUsernameValid by remember { mutableStateOf(true) }
+    var isPasswordValid by remember { mutableStateOf(true) }
+    var isRePasswordValid by remember { mutableStateOf(true) }
     var registered by remember { mutableStateOf(false) }
 
 
@@ -71,32 +73,46 @@ fun RegisterScreen(navController: NavHostController) {
     ) {
         LoginField(
             value = username,
-            onChange = { username = it },
+            onChange = {
+                username = it
+                isUsernameValid = isValidUsername(username)},
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp)
+                .padding(horizontal = 25.dp),
+            label = "Tên tài khoản",
+            placeholder = "(chỉ gồm chữ và số)",
+            isError = !isUsernameValid
         )
         Spacer(modifier = Modifier.height(30.dp))
         FirstPasswordField(
             value = password,
-            onChange = { password = it },
+            onChange = {
+                password = it
+                isPasswordValid = isValidPassword(password)
+                isRePasswordValid = (password == repassword)},
             submit = {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 25.dp)
+                .padding(horizontal = 25.dp),
+            label = "Mật khẩu",
+            placeholder = "(ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt)",
+            isError = !isPasswordValid
         )
         Spacer(modifier = Modifier.height(30.dp))
         PasswordField(
             value = repassword,
-            onChange = { repassword = it },
+            onChange = {
+                repassword = it
+                isRePasswordValid = (password == repassword)},
             submit = {
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 25.dp),
             placeholder = "Nhập lại mật khẩu",
-            label = "Nhập lại mật khẩu"
+            label = "Nhập lại mật khẩu",
+            isError = !isRePasswordValid
         )
         Spacer(modifier = Modifier.height(20.dp))
 //        Row(modifier = Modifier
@@ -112,24 +128,33 @@ fun RegisterScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                val registerData = RegisterData(username, password, repassword)
-                // hàm đăng ký ở đây
-                register(registerData) { success ->
-                    registered = success
-                }
+                if (isUsernameValid && isPasswordValid && isRePasswordValid) {
+                    val registerData = RegisterData(username, password, repassword)
+                    // hàm đăng ký ở đây
+                    register(registerData) { success ->
+                        registered = success
+                    }
 
-                coroutineScope.launch {
-                    delay(1000L) // Đợi 1 giây
+                    coroutineScope.launch {
+                        delay(1000L) // Đợi 1 giây
 
-                    if (registered) {
-                        navController.navigate("login")
-                        Toast.makeText(context, "Đăng ký tài khoản thành công", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Toast.makeText(context, "Đăng ký tài khoản thất bại", Toast.LENGTH_SHORT)
-                            .show()
+                        if (registered) {
+                            navController.navigate("login")
+                            Toast.makeText(context, "Đăng ký tài khoản thành công", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(context, "Đăng ký tài khoản thất bại", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
+                else if (username == "" || password == "" || repassword == "") {
+                    Toast.makeText(context,"Chưa nhập đủ thông tin",Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(context,"Dữ liệu nhập không hợp lệ",Toast.LENGTH_SHORT).show()
+                }
+
             },
             enabled = true,
             shape = RoundedCornerShape(15.dp),
@@ -143,7 +168,9 @@ fun RegisterScreen(navController: NavHostController) {
     }
 }
 
-
+fun isValidPassword(password: String): Boolean {
+    return password.matches(Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$"))
+}
 
 
 @Composable
@@ -153,7 +180,8 @@ fun FirstPasswordField(
     submit: () -> Unit,
     modifier: Modifier = Modifier,
     label: String = "Nhập mật khẩu",
-    placeholder: String = "Nhập mật khẩu"
+    placeholder: String = "Nhập mật khẩu",
+    isError: Boolean = false
 ) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -192,7 +220,8 @@ fun FirstPasswordField(
         placeholder = { Text(placeholder) },
         label = { Text(label) },
         singleLine = true,
-        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = isError
     )
 }
 

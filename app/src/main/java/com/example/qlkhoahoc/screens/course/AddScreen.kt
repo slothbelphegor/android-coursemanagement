@@ -77,7 +77,7 @@ fun Add(context: Context, token: String) {
         modifier = Modifier.fillMaxWidth(),
         value = name,
         onValueChange = { name = it },
-        label = { Text(text = "Tên khóa học") },
+        label = { Text(text = "Tên khóa học (*)") },
         textStyle = TextStyle(color = Color.Black),
         leadingIcon = {
             Icon(imageVector = Icons.Filled.Menu, contentDescription = "")
@@ -92,7 +92,7 @@ fun Add(context: Context, token: String) {
         modifier = Modifier.fillMaxWidth(),
         value = description,
         onValueChange = { description = it },
-        label = { Text(text = "Mô tả khóa học") },
+        label = { Text(text = "Mô tả khóa học (*)") },
         textStyle = TextStyle(color = Color.Black),
         leadingIcon = {
             Icon(imageVector = Icons.Filled.Info, contentDescription = "")
@@ -166,15 +166,21 @@ fun Add(context: Context, token: String) {
 
     Spacer(modifier = Modifier.height(16.dp))
     Button(onClick = {
-        val course = CourseAdd(name, description, image, video, category_id)
-        Log.d("Course add: ", course.toString())
-        addCourse(token, course) { result ->
-            if (result) {
-                Toast.makeText(context, "Thêm khóa học thành công!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Thêm khóa học không thành công!", Toast.LENGTH_SHORT).show()
+        if (name == "" || description == "") {
+            Toast.makeText(context, "Hãy nhập đủ các trường bắt buộc",Toast.LENGTH_SHORT).show()
+        }
+        else {
+            val course = CourseAdd(name, description, image, video, category_id)
+            Log.d("Course add: ", course.toString())
+            addCourse(token, course) { result ->
+                if (result) {
+                    Toast.makeText(context, "Thêm khóa học thành công!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Thêm khóa học không thành công!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
 
     }) {
         Text(text = "Lưu thông tin")
