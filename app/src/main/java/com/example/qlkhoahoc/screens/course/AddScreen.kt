@@ -166,7 +166,7 @@ fun Add(context: Context, token: String) {
 
     Spacer(modifier = Modifier.height(16.dp))
     Button(onClick = {
-        if (name == "" || description == "") {
+        if (name == "" || description == "" || category_id == 0) {
             Toast.makeText(context, "Hãy nhập đủ các trường bắt buộc",Toast.LENGTH_SHORT).show()
         }
         else {
