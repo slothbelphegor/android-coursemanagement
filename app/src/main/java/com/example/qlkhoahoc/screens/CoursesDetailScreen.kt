@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -78,12 +80,14 @@ fun CourseDetailScreen(
         }
     }
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundColor)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        val scrollState = rememberScrollState()
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(state = scrollState)) {
             TopAppBar(title = {
                 Text(text = "Chi tiết khóa học", color = Color.Black)
             }, backgroundColor = (backgroundColor), actions = {
@@ -233,66 +237,6 @@ fun CourseDetailScreen(
             )
         }
 
-//        if (showWatchDialog) {
-//            Dialog(
-//                onDismissRequest = { showWatchDialog = false },
-//                properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
-//            ) {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .background(Color.White, shape = RoundedCornerShape(8.dp))
-//                        .padding(16.dp)
-//                ) {
-//                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                        Text(
-//                            text = "Watch Course",
-//                            fontSize = 20.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                        Spacer(modifier = Modifier.height(8.dp))
-//                        Text(
-//                            text = "You are now watching the Kotlin & Jetpack Compose course.",
-//                            textAlign = TextAlign.Center
-//                        )
-//                        Spacer(modifier = Modifier.height(16.dp))
-//                        Button(onClick = { showWatchDialog = false }) {
-//                            Text(text = "OK")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-        if (showEditDialog) {
-            Dialog(
-                onDismissRequest = { showEditDialog = false }, properties = DialogProperties(
-                    dismissOnBackPress = true, dismissOnClickOutside = true
-                )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White, shape = RoundedCornerShape(8.dp))
-                        .padding(16.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "Edit Course", fontSize = 20.sp, fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "You are now editing the details of the Kotlin & Jetpack Compose course.",
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { showEditDialog = false }) {
-                            Text(text = "OK")
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
