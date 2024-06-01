@@ -23,12 +23,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
@@ -56,14 +53,12 @@ fun getApiUrl(context: Context): String {
 fun CourseDetailScreen(
     course: Course, backgroundColor: Color, categoryName: String, navController: NavHostController
 ) {
-    var showWatchDialog by remember { mutableStateOf(false) }
-    var showEditDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val URL_IMAGE = getApiUrl(context)
 
     val token = TokenManager.getToken(context).toString()
-    val tk: String = "Bearer $token"
+    val tk = "Bearer $token"
     val tokenData = decodeJWT(token)
     val roleId = remember { mutableStateOf(0) }
     val hasAttended = remember { mutableStateOf(false) }
