@@ -48,7 +48,7 @@ fun FieldWithIcon(icon: ImageVector, value: String) {
 }
 
 @Composable
-fun tempscreen()  {
+fun AdditionalScreen()  {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,5 +69,5 @@ fun tempscreen()  {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun temppreview() {
-    tempscreen()
+    AdditionalScreen()
 }

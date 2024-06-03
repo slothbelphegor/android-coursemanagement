@@ -71,23 +71,6 @@ fun CoursesScreen(navController: NavHostController) {
 }
 
 val courseColors = listOf(courseColor1, courseColor2, courseColor3)
-//var colorIndex = 0
-
-//@Composable
-//fun showCourses(list: MutableList<Course>) {
-//    LazyColumn(
-//        contentPadding = PaddingValues(all = 6.dp), verticalArrangement = Arrangement.spacedBy(2.dp)
-//    ) {
-//        items(list) { course ->
-//            CourseItem(course = course, courseColors[colorIndex])
-//            if (colorIndex >= courseColors.size) {
-//                colorIndex = 0
-//            } else {
-//                colorIndex += 1
-//            }
-//        }
-//    }
-//}
 
 @Composable
 fun showCourses(list: MutableList<Course>,navController: NavHostController) {
@@ -117,7 +100,6 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
 }
 
 @Composable
-//fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>, onClick: () -> Unit) {
  fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>,navController: NavHostController,  onClick: () -> Unit) {
     val categoryName = categoryMap[course.categoryId] ?: "Unknown Category"
 
@@ -209,19 +191,3 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
 
 
 
-//@Preview(showSystemUi = true, showBackground = true)
-//@Composable
-//fun CoursesPreview() {
-//    val course = Course(
-//        "2",
-//        "Lập trình Python căn bảnnnnnnnnnnnnnnnnnnnnnnn nnnnnnnnnnnnnnn",
-//        "Với vỏn vẹn 1 video thời lượng 12 tiếng, Bro Code đã cung cấp đầy đủ những" +
-//                " kiến thức căn bản nhất về Python. Khóa học này được nhiều người đón nhận nhờ" +
-//                " tính dễ tiếp cận và gần gũi của nó.",
-//        "image", "Video", 2, 1, "Category 1"
-//    )
-//
-//    val categoryMap = mapOf(2 to "Category 1")
-//
-//    CourseItem(course, Color.Gray, categoryMap)
-//}

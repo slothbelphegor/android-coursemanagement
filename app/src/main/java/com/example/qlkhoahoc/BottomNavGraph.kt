@@ -50,6 +50,7 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable("courses") { CoursesScreen(navController) }
         composable("attended") { AttendedCoursesScreen(navController)}
+        composable("additional") {AdditionalScreen()}
 
         composable(
             route = "course_detail/{courseId}/{bgColor}/{categoryName}",
@@ -64,14 +65,7 @@ fun BottomNavGraph(navController: NavHostController) {
             val bgColorLong = backStackEntry.arguments?.getLong("bgColor")
             val bgColor = bgColorLong?.let { Color(it.toULong()) }
             val categoryName = backStackEntry.arguments?.getString("categoryName")
-//
-//            if (courseJson != null && bgColorLong != null && categoryName != null) {
-//                val course = Gson().fromJson(courseJson, Course::class.java)
-//                val bgColor = Color(bgColorLong)
-//                CourseDetailScreen(course, bgColor, categoryName)
-//            } else {
-//                Toast.makeText(LocalContext.current, "Navigation failed", Toast.LENGTH_SHORT).show()
-//            }
+
             if (courseId != null  && bgColor != null && categoryName != null) {
                 var course by remember { mutableStateOf<Course?>(null) }
                 getCourseById(courseId) { fetchedCourse ->

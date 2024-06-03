@@ -55,6 +55,7 @@ fun BottomBar(navController: NavHostController) {
         BottomBarScreen.Courses,
         if (roleId.value == 2) BottomBarScreen.AddCourse else BottomBarScreen.AttendedCourses,
         BottomBarScreen.Find,
+        BottomBarScreen.Additional
     )
     // biến nhớ vị trí của màn hình nào
     val navBackStackEntry by navController.currentBackStackEntryAsState()

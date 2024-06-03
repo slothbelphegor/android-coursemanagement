@@ -12,19 +12,19 @@ sealed class BottomBarScreen(
 ) {
     object Home : BottomBarScreen(
         route = "home",
-        title = "Home",  //tên button hiện ra màn hình
+        title = "Trang chủ",  //tên button hiện ra màn hình
         icon = Icons.Default.Home // icon sử dụng
     )
 
     object Courses : BottomBarScreen(
         route = "courses",
-        title = "Courses",  //tên button hiện ra màn hình
+        title = "Khóa học",  //tên button hiện ra màn hình
         icon = Icons.Default.AccountBox // icon sử dụng
     )
 
     object AddCourse : BottomBarScreen(
         route = "add",
-        title = "Add",  //tên button hiện ra màn hình
+        title = "Thêm",  //tên button hiện ra màn hình
         icon = Icons.Default.Add // icon sử dụng
     )
 
@@ -36,8 +36,15 @@ sealed class BottomBarScreen(
 
     object AttendedCourses : BottomBarScreen(
         route = "attended",
-        title = "Attended",
+        title = "Đã tham gia",
         icon = Icons.Default.Favorite
+    )
+
+    object Additional : BottomBarScreen(
+        route = "additional",
+        title = "Chức năng mới",
+        icon = Icons.Default.Star
+
     )
 
 
