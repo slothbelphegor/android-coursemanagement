@@ -11,7 +11,7 @@ fun findCourse(searchTerm: String, callback: (MutableList<Course>) -> Unit) {
     val courseNull = mutableListOf<Course>(
         Course(
             "", "Không tìm thấy", "Không tìm thấy", "Không tìm thấy",
-            "Không tìm thấy", 0, 0, "Không tìm thấy"
+            "Không tìm thấy", 0, 0, 0, "Không tìm thấy"
         )
     )
     var rs: MutableList<Course>

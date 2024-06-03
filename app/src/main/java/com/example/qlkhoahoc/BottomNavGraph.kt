@@ -1,11 +1,8 @@
 package com.example.qlkhoahoc
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,11 +11,7 @@ import androidx.navigation.navArgument
 import com.example.qlkhoahoc.methods.course.getCourseById
 import com.example.qlkhoahoc.model.Course
 import com.example.qlkhoahoc.screens.*
-import com.example.qlkhoahoc.screens.course.AddScreen
-import com.example.qlkhoahoc.screens.course.AttendedCoursesScreen
-import com.example.qlkhoahoc.screens.course.CoursesScreen
-import com.example.qlkhoahoc.screens.course.EditCourseScreen
-import com.google.gson.Gson
+import com.example.qlkhoahoc.screens.course.*
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {

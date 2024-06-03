@@ -49,4 +49,7 @@ interface ApiService {
 
     @DELETE("orders/delete/{id}")
     fun deleteOrder(@Header("Authorization") token: String, @Path("id") id: String): Call<ApiResponse>
+
+    @GET("courses/popular")
+    fun sortCourses(@Query("sort") sort: String): Call<MutableList<Course>>
 }

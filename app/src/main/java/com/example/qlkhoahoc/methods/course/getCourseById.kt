@@ -8,7 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 fun getCourseById(courseId: String, callback: (Course?) -> Unit) {
-    val c = Course("Not Found", "Not Found", "Not Found", "Not Found", "Not Found", 0, 0, "Not Found")
+    val c = Course("Not Found", "Not Found", "Not Found", "Not Found", "Not Found", 0, 0, 0, "Not Found")
     var rs: Course
     val call = ApiClient.apiService.getById(courseId)
 

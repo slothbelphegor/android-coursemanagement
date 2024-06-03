@@ -1,10 +1,9 @@
 package com.example.qlkhoahoc.screens.course
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +12,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
@@ -27,13 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.qlkhoahoc.methods.category.getAllCategories
-import com.example.qlkhoahoc.methods.course.getAllCourses
+import com.example.qlkhoahoc.methods.course.sortCourses
 import com.example.qlkhoahoc.model.Course
-import com.example.qlkhoahoc.screens.CourseDetailScreen
 import com.example.qlkhoahoc.ui.theme.*
-import com.google.gson.Gson
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 
 @Composable
@@ -41,10 +37,15 @@ fun CoursesScreen(navController: NavHostController) {
     var list by remember {
         mutableStateOf(mutableListOf<Course>())
     }
+    var sortAsc by remember { mutableStateOf(false) }
+    val sortText = if (!sortAsc) "Sắp xếp theo độ phổ biến giảm dần" else "Sắp xếp theo độ phổ biến tăng dần"
 
     // Goi ham API va nhan ket qua tra ve thong qua callback
-    getAllCourses {
-        list = it
+    // getAllCourses {
+    //     list = it
+    // }
+    sortCourses(if (sortAsc) "asc" else "desc") { sortedList ->
+        list = sortedList
     }
     //ve UI
     Box(
@@ -57,23 +58,44 @@ fun CoursesScreen(navController: NavHostController) {
                     )
                 )
             ), contentAlignment = Alignment.TopCenter
-    ) {}
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-        showCourses(list = list, navController)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = sortText, fontSize = 14.sp, fontWeight = FontWeight.Normal)
+                    IconButton(
+                        onClick = {
+                            sortAsc = !sortAsc
+                            sortCourses(if (sortAsc) "asc" else "desc") { sortedList ->
+                                list = sortedList
+                            }
+                        }
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            showCourses(list = list, navController)
+        }
     }
 }
 
 val courseColors = listOf(courseColor1, courseColor2, courseColor3)
 
 @Composable
-fun showCourses(list: MutableList<Course>,navController: NavHostController) {
+fun showCourses(list: MutableList<Course>, navController: NavHostController) {
     var colorIndex = 0
     var categoryMap by remember {
         mutableStateOf(mapOf<Int, String>())
@@ -93,14 +115,20 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
                 courseColors[colorIndex],
                 categoryMap,
                 navController,
-                onClick = {  })
-                colorIndex = (colorIndex + 1) % courseColors.size
+                onClick = { })
+            colorIndex = (colorIndex + 1) % courseColors.size
         }
     }
 }
 
 @Composable
- fun CourseItem(course: Course, bgColor: Color, categoryMap: Map<Int, String>,navController: NavHostController,  onClick: () -> Unit) {
+fun CourseItem(
+    course: Course,
+    bgColor: Color,
+    categoryMap: Map<Int, String>,
+    navController: NavHostController,
+    onClick: () -> Unit
+) {
     val categoryName = categoryMap[course.categoryId] ?: "Unknown Category"
 
     Box(
@@ -164,8 +192,6 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
 
                         }
                     }
-
-
                     course.description?.let {
                         Row {
                             Icon(
@@ -182,9 +208,18 @@ fun showCourses(list: MutableList<Course>,navController: NavHostController) {
                             )
                         }
                     }
+                    course.orderCount?.let {
+                        Text(
+                            modifier = Modifier.padding(top = 6.dp),
+                            text = "Số lượng khóa học được đăng ký: $it",
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
+
                 }
             }
-
         }
     }
 }

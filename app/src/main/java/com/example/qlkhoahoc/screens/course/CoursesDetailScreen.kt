@@ -1,4 +1,4 @@
-package com.example.qlkhoahoc.screens
+package com.example.qlkhoahoc.screens.course
 
 
 import android.content.Context
