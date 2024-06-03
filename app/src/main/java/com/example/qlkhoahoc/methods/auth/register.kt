@@ -11,7 +11,7 @@ import retrofit2.Response
 
 fun register(registerData: RegisterData, callback: (Boolean) -> Unit) {
     val call = ApiClient.apiService.register(registerData)
-
+    Log.d("Register: ", registerData.toString())
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
             if (response.isSuccessful) {

@@ -141,7 +141,7 @@ fun RegisterScreen(navController: NavHostController) {
         Button(
             onClick = {
                 if (isUsernameValid && isPasswordValid && isRePasswordValid) {
-                    val registerData = RegisterData(username, email, password, repassword)
+                    val registerData = RegisterData(email, username, password, repassword)
                     // hàm đăng ký ở đây
                     register(registerData) { success ->
                         registered = success
