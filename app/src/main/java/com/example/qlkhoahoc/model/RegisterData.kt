@@ -1,7 +1,10 @@
 package com.example.qlkhoahoc.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RegisterData(
-    val username: String,
-    val password: String,
-    val retypePassword: String,
+    @SerializedName("username") var username: String? = null,
+    @SerializedName("email") var email: String? = null,
+    @SerializedName("password") var password: String? = null,
+    @SerializedName("retypePassword") var retypePassword: String? = null,
 )

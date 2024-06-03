@@ -11,10 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,9 +53,11 @@ fun RegisterScreen(navController: NavHostController) {
     var tk: String
 
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repassword by remember { mutableStateOf("") }
     var isUsernameValid by remember { mutableStateOf(true) }
+    var isEmailValid by remember { mutableStateOf(true) }
     var isPasswordValid by remember { mutableStateOf(true) }
     var isRePasswordValid by remember { mutableStateOf(true) }
     var registered by remember { mutableStateOf(false) }
@@ -82,6 +81,19 @@ fun RegisterScreen(navController: NavHostController) {
             label = "Tên tài khoản",
             placeholder = "(chỉ gồm chữ và số)",
             isError = !isUsernameValid
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        EmailField(
+            value = email,
+            onChange = {
+                email = it
+                isEmailValid = isValidEmail(email)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp),
+            label = "Địa chỉ email",
+            isError = !isEmailValid
         )
         Spacer(modifier = Modifier.height(30.dp))
         FirstPasswordField(
@@ -129,14 +141,14 @@ fun RegisterScreen(navController: NavHostController) {
         Button(
             onClick = {
                 if (isUsernameValid && isPasswordValid && isRePasswordValid) {
-                    val registerData = RegisterData(username, password, repassword)
+                    val registerData = RegisterData(username, email, password, repassword)
                     // hàm đăng ký ở đây
                     register(registerData) { success ->
                         registered = success
                     }
 
                     coroutineScope.launch {
-                        delay(1000L) // Đợi 1 giây
+                        delay(5000L) // Đợi 5 giây cho hệ thống kịp phản hồi
 
                         if (registered) {
                             navController.navigate("login")
@@ -172,6 +184,10 @@ fun isValidPassword(password: String): Boolean {
     return password.matches(Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@\$%^&*-]).{8,}\$"))
 }
 
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = Regex("""^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$""")
+    return email.matches(emailRegex)
+}
 
 @Composable
 fun FirstPasswordField(
@@ -225,10 +241,44 @@ fun FirstPasswordField(
     )
 }
 
+@Composable
+fun EmailField(
+    value: String,
+    onChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    label: String = "Email",
+    placeholder: String = "Nhập địa chỉ email",
+    isError: Boolean = false
+) {
+
+    val leadingIcon = @Composable {
+        Icon(
+            Icons.Default.Mail,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.primary
+        )
+    }
+
+    TextField(
+        value = value,
+        onValueChange = onChange,
+        modifier = modifier,
+        leadingIcon = leadingIcon,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        placeholder = { Text(placeholder) },
+        label = {
+            Text(label)
+        },
+        singleLine = true,
+        isError = isError
+
+    )
+}
+
 //@Preview(showSystemUi = true, showBackground = true)
 //@Composable
 //fun RegisterScreenPreview() {
 //
 //    RegisterScreen(rememberNavController())
 //}
-
+//
