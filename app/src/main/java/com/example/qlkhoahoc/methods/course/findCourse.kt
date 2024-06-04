@@ -14,7 +14,7 @@ fun findCourse(searchTerm: String, condition: String, callback: (MutableList<Cou
             "Không tìm thấy", 0, 0, 0, "Không tìm thấy"
         )
     )
-
+    Log.d("Condition check: ", condition)
     val call = ApiClient.apiService.findCourse(searchTerm, condition)
     call.enqueue(object : Callback<MutableList<Course>> {
         override fun onResponse(
@@ -22,7 +22,7 @@ fun findCourse(searchTerm: String, condition: String, callback: (MutableList<Cou
             response: Response<MutableList<Course>>
         ) {
             val rs = if (response.isSuccessful && response.body().orEmpty().isNotEmpty()) {
-                Log.e("Error", condition)
+                Log.e("Err condition", condition)
                 response.body()!!
             } else {
                 courseNull

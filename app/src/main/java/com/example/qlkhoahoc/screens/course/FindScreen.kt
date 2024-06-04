@@ -69,7 +69,8 @@ fun Find(navController: NavHostController) {
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            findCourse(searchTerm, condition = isChecked.toString()) {
+                            findCourse(searchTerm, isChecked.toString()) {
+                                Log.d("condition ....: ", isChecked.toString())
                                 list = it
                                 Log.d("Searching:", searchTerm)
                             }
