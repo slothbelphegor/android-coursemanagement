@@ -36,7 +36,7 @@ interface ApiService {
     fun getAllCategories(): Call<List<Category>>
 
     @GET("courses/search")
-    fun findCourse(@Query("searchTerm") searchTerm: String): Call<MutableList<Course>>
+    fun findCourse(@Query("searchTerm") searchTerm: String, condition: String?): Call<MutableList<Course>>
 
     @POST("orders")
     fun createOrder(@Header("Authorization") token: String, @Body createOrder: CreateOrder): Call<ApiResponse>

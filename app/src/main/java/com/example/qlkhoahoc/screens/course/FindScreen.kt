@@ -1,12 +1,11 @@
 package com.example.qlkhoahoc.screens
 
+import androidx.compose.ui.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -50,9 +49,9 @@ fun FindScreen(navController: NavHostController) {
 @Composable
 fun Find(navController: NavHostController) {
     var searchTerm by remember { mutableStateOf("") }
-    var list by remember {
-        mutableStateOf(mutableListOf<Course>())
-    }
+    var list by remember { mutableStateOf(mutableListOf<Course>()) }
+    var isChecked by remember { mutableStateOf(false) } // State for checkbox
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,40 +59,56 @@ fun Find(navController: NavHostController) {
             .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = searchTerm,
-            onValueChange = { searchTerm = it },
-            label = { Text(text = "Tìm kiếm theo tên, mô tả") },
+        Column {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = searchTerm,
+                onValueChange = { searchTerm = it },
+                label = { Text(text = "Tìm kiếm theo tên, mô tả") },
 
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        findCourse(searchTerm) {
-                            list = it
-                            Log.d("Searching:", searchTerm)
-//                            Log.d("Result:", list.toString())
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            findCourse(searchTerm, condition = isChecked.toString()) {
+                                list = it
+                                Log.d("Searching:", searchTerm)
+                            }
                         }
-                    }) {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = ""
-                    )
-                }
-            },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = ""
+                        )
+                    }
+                },
 
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                )
             )
-        )
-        showCourses(list = list, navController)
-        // showCourses(list = courseList, rememberNavController())
+            Spacer(modifier = Modifier.height(8.dp)) // Add some vertical space between text field and checkbox
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = isChecked,
+                    onCheckedChange = { isChecked = it },
 
+                    colors = CheckboxDefaults.colors(
+                        checkmarkColor = Color.White // Customize checkmark color if needed
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp)) // Add some space between checkbox and description
+                Text(
+                    text = "Các khoá học có ảnh và video",
+                    style = MaterialTheme.typography.body1
+                )
+            }
+        }
+        showCourses(list = list, navController)
     }
 }
-
-
 //@Preview(showSystemUi = true, showBackground = true)
 //@Composable
 //fun FindPreview() {
